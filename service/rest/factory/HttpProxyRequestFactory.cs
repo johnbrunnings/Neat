@@ -21,19 +21,20 @@ namespace neat.service.rest.factory
             return httpWebRequestBase;
         }
 
-        private void Setup(HttpWebRequestParameters httpWebRequestParameters, HttpWebRequestBase httpWebRequestBase)
+        private void Setup(HttpWebRequestParameters httpWebRequestParameters, HttpWebRequestBase httpWebRequest)
         {
-            httpWebRequestBase.Method = httpWebRequestParameters.Method.ToString().ToUpperInvariant();
-            httpWebRequestBase.ContentType = httpWebRequestParameters.ContentType;
+            httpWebRequest.Method = httpWebRequestParameters.Method.ToString().ToUpperInvariant();
+            httpWebRequest.ContentType = httpWebRequestParameters.ContentType;
             if (httpWebRequestParameters.Method == HttpRequestMethod.Post || httpWebRequestParameters.Method == HttpRequestMethod.Put)
             {
-                httpWebRequestBase.ContentLength = httpWebRequestParameters.ContentLength;
+                httpWebRequest.ContentLength = httpWebRequestParameters.ContentLength;
             }
-            httpWebRequestBase.ReadWriteTimeout = httpWebRequestParameters.ReadWriteTimeout;
-            httpWebRequestBase.Timeout = httpWebRequestParameters.Timeout;
-            httpWebRequestBase.TransferEncoding = httpWebRequestParameters.TransferEncoding;
-            httpWebRequestBase.AllowAutoRedirect = false;
-            httpWebRequestBase.Proxy = null;
+            httpWebRequest.ReadWriteTimeout = httpWebRequestParameters.ReadWriteTimeout;
+            httpWebRequest.Timeout = httpWebRequestParameters.Timeout;
+            httpWebRequest.TransferEncoding = httpWebRequestParameters.TransferEncoding;
+            httpWebRequest.AllowAutoRedirect = false;
+            httpWebRequest.KeepAlive = true;
+            httpWebRequest.Proxy = null;
         }
     }
 }

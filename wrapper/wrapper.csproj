@@ -44,11 +44,15 @@
     <Compile Include="factory\HttpWebResponseFactory.cs" />
     <Compile Include="factory\interface\IHttpWebRequestFactory.cs" />
     <Compile Include="factory\interface\IHttpWebResponseFactory.cs" />
+    <Compile Include="factory\interface\IStreamReaderFactory.cs" />
+    <Compile Include="factory\StreamReaderFactory.cs" />
     <Compile Include="HttpWebRequestWrapper.cs" />
     <Compile Include="HttpWebResponseWrapper.cs" />
     <Compile Include="parent\HttpWebResponseBase.cs" />
     <Compile Include="parent\HttpWebRequestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamReaderWrapper.cs" />
+    <Compile Include="parent\StreamReaderBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
