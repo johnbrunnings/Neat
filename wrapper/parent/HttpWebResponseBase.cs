@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace neat.wrapper.parent
 {
-    public abstract class HttpWebResponseWrapperBase
+    public abstract class HttpWebResponseBase
     {
         public abstract object GetLifetimeService();
         public abstract object InitializeLifetimeService();

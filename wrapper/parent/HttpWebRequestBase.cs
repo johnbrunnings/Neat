@@ -10,7 +10,7 @@ using System.Security.Principal;
 
 namespace neat.wrapper.parent
 {
-    public abstract class HttpWebRequestWrapperBase
+    public abstract class HttpWebRequestBase
     {
         public abstract object GetLifetimeService();
         public abstract object InitializeLifetimeService();

@@ -7,6 +7,6 @@ namespace neat.wrapper.factory.@interface
     {
         HttpWebRequestWrapper Create(Uri requestUri);
         HttpWebRequestWrapper Create(string requestUri);
-        HttpWebRequestWrapper Create(HttpWebRequest request);
+        HttpWebRequestWrapper Create(System.Net.HttpWebRequest request);
     }
 }

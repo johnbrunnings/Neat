@@ -8,15 +8,15 @@ namespace neat.wrapper.factory
     {
         public HttpWebRequestWrapper Create(Uri requestUri)
         {
-            return new HttpWebRequestWrapper(WebRequest.Create(requestUri) as HttpWebRequest);
+            return new HttpWebRequestWrapper(WebRequest.Create(requestUri) as System.Net.HttpWebRequest);
         }
 
         public HttpWebRequestWrapper Create(string requestUri)
         {
-            return new HttpWebRequestWrapper(WebRequest.Create(requestUri) as HttpWebRequest);
+            return new HttpWebRequestWrapper(WebRequest.Create(requestUri) as System.Net.HttpWebRequest);
         }
 
-        public HttpWebRequestWrapper Create(HttpWebRequest request)
+        public HttpWebRequestWrapper Create(System.Net.HttpWebRequest request)
         {
             return new HttpWebRequestWrapper(request);
         }

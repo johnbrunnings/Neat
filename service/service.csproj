@@ -41,9 +41,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="rest\factory\HttpProxyRequestFactory.cs" />
+    <Compile Include="rest\factory\interface\IHttpProxyRequestFactory.cs" />
+    <Compile Include="rest\HttpRequestMethod.cs" />
+    <Compile Include="rest\HttpWebRequestParameters.cs" />
+    <Compile Include="rest\proxy\HttpWebProxy.cs" />
+    <Compile Include="rest\proxy\interface\IHttpWebProxy.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="rest\proxy\" />
+    <ProjectReference Include="..\wrapper\wrapper.csproj">
+      <Project>{E46B78EE-DF25-4A7B-BE62-95EB7E89262A}</Project>
+      <Name>wrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

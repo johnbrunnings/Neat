@@ -46,8 +46,8 @@
     <Compile Include="factory\interface\IHttpWebResponseFactory.cs" />
     <Compile Include="HttpWebRequestWrapper.cs" />
     <Compile Include="HttpWebResponseWrapper.cs" />
-    <Compile Include="parent\HttpWebResponseWrapperBase.cs" />
-    <Compile Include="parent\HttpWebRequestWrapperBase.cs" />
+    <Compile Include="parent\HttpWebResponseBase.cs" />
+    <Compile Include="parent\HttpWebRequestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

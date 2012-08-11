@@ -7,7 +7,7 @@ using neat.wrapper.parent;
 
 namespace neat.wrapper
 {
-    public class HttpWebResponseWrapper : HttpWebResponseWrapperBase
+    public class HttpWebResponseWrapper : HttpWebResponseBase
     {
         private readonly HttpWebResponse _httpWebResponse;
         public override object GetLifetimeService()
