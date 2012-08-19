@@ -1,4 +1,4 @@
-namespace Neat.Service.Rest.Factory.Interface
+namespace Neat.Service.Rest.Client.Factory.Interface
 {
     public interface IHttpWebProxyRequestFactory
     {

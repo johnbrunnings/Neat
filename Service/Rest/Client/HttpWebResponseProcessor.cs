@@ -1,8 +1,8 @@
-﻿using Neat.Service.Rest.Interface;
+﻿using Neat.Service.Rest.Client.Interface;
 using Neat.Wrapper.Abstract;
 using Neat.Wrapper.Factory.Interface;
 
-namespace Neat.Service.Rest
+namespace Neat.Service.Rest.Client
 {
     public class HttpWebResponseProcessor : IHttpWebResponseProcessor
     {

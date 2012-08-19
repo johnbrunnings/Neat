@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Neat.Service.Rest
+namespace Neat.Service.Rest.Client
 {
     public class HttpWebRequestParameters
     {

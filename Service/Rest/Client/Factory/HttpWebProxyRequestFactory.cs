@@ -1,8 +1,8 @@
-﻿using Neat.Wrapper.Abstract;
-using Neat.Service.Rest.Factory.Interface;
+﻿using Neat.Service.Rest.Client.Factory.Interface;
+using Neat.Wrapper.Abstract;
 using Neat.Wrapper.Factory.Interface;
 
-namespace Neat.Service.Rest.Factory
+namespace Neat.Service.Rest.Client.Factory
 {
     public class HttpWebProxyRequestFactory : IHttpWebProxyRequestFactory
     {

@@ -1,6 +1,6 @@
 ﻿using Neat.Wrapper.Abstract;
 
-namespace Neat.Service.Rest
+namespace Neat.Service.Rest.Client
 {
     public class HttpWebProxyRequest
     {

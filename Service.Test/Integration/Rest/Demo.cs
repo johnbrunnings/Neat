@@ -2,12 +2,12 @@
 using System.Text;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Neat.Service.Rest;
-using Neat.Service.Rest.Factory;
-using Neat.Service.Rest.Factory.Interface;
-using Neat.Service.Rest.Interface;
-using Neat.Service.Rest.Proxy;
-using Neat.Service.Rest.Proxy.Interface;
+using Neat.Service.Rest.Client;
+using Neat.Service.Rest.Client.Factory;
+using Neat.Service.Rest.Client.Factory.Interface;
+using Neat.Service.Rest.Client.Interface;
+using Neat.Service.Rest.Client.Proxy;
+using Neat.Service.Rest.Client.Proxy.Interface;
 using Neat.Wrapper.Factory;
 using Neat.Wrapper.Factory.Interface;
 
@@ -39,7 +39,7 @@ namespace Neat.Service.Test.Integration.Rest
             _httpWebResponseFactory = new HttpWebResponseFactory();
             _streamReaderFactory = new StreamReaderFactory();
             _httpWebResponseProcessor = new HttpWebResponseProcessor(_streamReaderFactory);
-            _httpWebProxy = new HttpWebProxy(_httpWebResponseFactory, _httpWebResponseProcessor);
+            _httpWebProxy = new HttpWebProxy(_httpWebProxyRequestFactory, _httpWebResponseFactory, _httpWebResponseProcessor);
             
             _httpWebRequestParametersGet = new HttpWebRequestParameters()
             {
@@ -50,6 +50,7 @@ namespace Neat.Service.Test.Integration.Rest
                 Timeout = 30000,
                 ResponseCallback = ResponseCallbackGet
             };
+
             var encoding = new ASCIIEncoding();
             _requestBytes = encoding.GetBytes(POST_DATA_TEST);
             _httpWebRequestParametersPost = new HttpWebRequestParameters()
@@ -63,6 +64,7 @@ namespace Neat.Service.Test.Integration.Rest
                 RequestBytes = _requestBytes,
                 ResponseCallback = ResponseCallbackPost
             };
+
             _manualResetEventGet = new ManualResetEvent(false);
             _manualResetEventPost = new ManualResetEvent(false);
         }
@@ -70,8 +72,7 @@ namespace Neat.Service.Test.Integration.Rest
         [TestMethod]
         public void RunGetDemo()
         {
-            var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(_httpWebRequestParametersGet);
-            var responseData = _httpWebProxy.Request(httpWebProxyRequest);
+            var responseData = _httpWebProxy.Request(_httpWebRequestParametersGet);
 
             Console.WriteLine(responseData);
             Assert.IsNotNull(responseData);
@@ -81,8 +82,7 @@ namespace Neat.Service.Test.Integration.Rest
         [TestMethod]
         public void RunPostDemo()
         {
-            var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(_httpWebRequestParametersPost);
-            var responseData = _httpWebProxy.Request(httpWebProxyRequest);
+            var responseData = _httpWebProxy.Request(_httpWebRequestParametersPost);
 
             Console.WriteLine(responseData);
             Assert.IsNotNull(responseData);
@@ -92,8 +92,7 @@ namespace Neat.Service.Test.Integration.Rest
         [TestMethod]
         public void RunAsyncGetDemo()
         {
-            var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(_httpWebRequestParametersGet);
-            _httpWebProxy.BeginRequest(httpWebProxyRequest);
+            _httpWebProxy.BeginRequest(_httpWebRequestParametersGet);
 
             if(_manualResetEventGet.WaitOne(30000))
             {
@@ -120,8 +119,7 @@ namespace Neat.Service.Test.Integration.Rest
         [TestMethod]
         public void RunAsyncPostDemo()
         {
-            var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(_httpWebRequestParametersPost);
-            _httpWebProxy.BeginRequest(httpWebProxyRequest);
+            _httpWebProxy.BeginRequest(_httpWebRequestParametersPost);
 
             if (_manualResetEventPost.WaitOne(30000))
             {
