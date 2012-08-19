@@ -7,9 +7,9 @@ using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
-using neat.wrapper.parent;
+using Neat.Wrapper.Abstract;
 
-namespace neat.wrapper
+namespace Neat.Wrapper
 {
     public class HttpWebRequestWrapper : HttpWebRequestBase
     {

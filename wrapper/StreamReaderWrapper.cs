@@ -2,9 +2,9 @@
 using System.IO;
 using System.Runtime.Remoting;
 using System.Text;
-using neat.wrapper.parent;
+using Neat.Wrapper.Abstract;
 
-namespace neat.wrapper
+namespace Neat.Wrapper
 {
     public class StreamReaderWrapper : StreamReaderBase
     {

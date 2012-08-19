@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 
-namespace neat.wrapper.parent
+namespace Neat.Wrapper.Abstract
 {
     public abstract class HttpWebRequestBase
     {

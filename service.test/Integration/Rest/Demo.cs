@@ -1,15 +1,15 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using neat.service.rest;
-using neat.service.rest.factory;
-using neat.service.rest.factory.@interface;
-using neat.service.rest.@interface;
-using neat.service.rest.proxy;
-using neat.service.rest.proxy.@interface;
-using neat.wrapper.factory;
-using neat.wrapper.factory.@interface;
+using Neat.Service.Rest;
+using Neat.Service.Rest.Factory;
+using Neat.Service.Rest.Factory.Interface;
+using Neat.Service.Rest.Interface;
+using Neat.Service.Rest.Proxy;
+using Neat.Service.Rest.Proxy.Interface;
+using Neat.Wrapper.Factory;
+using Neat.Wrapper.Factory.Interface;
 
-namespace neat.service.test.rest
+namespace Neat.Service.Test.Integration.Rest
 {
     [TestClass]
     public class Demo

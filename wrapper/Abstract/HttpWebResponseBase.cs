@@ -4,7 +4,7 @@ using System.Net;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 
-namespace neat.wrapper.parent
+namespace Neat.Wrapper.Abstract
 {
     public abstract class HttpWebResponseBase
     {

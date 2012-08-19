@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Remoting;
 using System.Text;
 
-namespace neat.wrapper.parent
+namespace Neat.Wrapper.Abstract
 {
     public abstract class StreamReaderBase
     {
