@@ -13,7 +13,7 @@ namespace Neat.Wrapper
 {
     public class HttpWebRequestWrapper : HttpWebRequestBase
     {
-        private readonly System.Net.HttpWebRequest _httpWebRequest;
+        private readonly HttpWebRequest _httpWebRequest;
         public override object GetLifetimeService()
         {
             return _httpWebRequest.GetLifetimeService();
@@ -361,7 +361,7 @@ namespace Neat.Wrapper
             set { _httpWebRequest.Date = value; }
         }
 
-        public HttpWebRequestWrapper(System.Net.HttpWebRequest httpWebRequest)
+        public HttpWebRequestWrapper(HttpWebRequest httpWebRequest)
         {
             _httpWebRequest = httpWebRequest;
         }
