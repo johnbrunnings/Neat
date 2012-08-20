@@ -8,4 +8,4 @@ This includes things like
 * Aspects for use with IoC frameworks to add common, cross-cutting concerns to projects
 * and so on.
 
-If you'd like to contribute please contact me at [johnbrunnings.com](mailto:me@johnbrunnings.com)!
+If you'd like to contribute please contact me at [me@johnbrunnings.com](mailto:me@johnbrunnings.com)!
