@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using Neat.Wrapper.Factory.Interface;
+using Neat.WindowsPhone7.Wrapper.Factory.Interface;
 
-namespace Neat.Wrapper.Factory
+namespace Neat.WindowsPhone7.Wrapper.Factory
 {
     public class HttpWebRequestFactory : IHttpWebRequestFactory
     {
