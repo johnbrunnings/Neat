@@ -4,6 +4,7 @@ using System.Net;
 using Neat.Service.Rest.Client.Factory.Interface;
 using Neat.Service.Rest.Client.Interface;
 using Neat.Service.Rest.Client.Proxy.Interface;
+using Neat.Wrapper.Abstract;
 using Neat.Wrapper.Factory.Interface;
 
 namespace Neat.Service.Rest.Client.Proxy
@@ -12,13 +13,13 @@ namespace Neat.Service.Rest.Client.Proxy
     {
         private readonly IHttpWebProxyRequestFactory _httpWebProxyRequestFactory;
         private readonly IHttpWebResponseFactory _httpWebResponseFactory;
-        private readonly IHttpWebResponseProcessor _httpWebResponseProcessor;
+        private readonly IHttpWebProcessor _httpWebProcessor;
 
-        public HttpWebProxy(IHttpWebProxyRequestFactory httpWebProxyRequestFactory, IHttpWebResponseFactory httpWebResponseFactory, IHttpWebResponseProcessor httpWebResponseProcessor)
+        public HttpWebProxy(IHttpWebProxyRequestFactory httpWebProxyRequestFactory, IHttpWebResponseFactory httpWebResponseFactory, IHttpWebProcessor httpWebProcessor)
         {
             _httpWebProxyRequestFactory = httpWebProxyRequestFactory;
             _httpWebResponseFactory = httpWebResponseFactory;
-            _httpWebResponseProcessor = httpWebResponseProcessor;
+            _httpWebProcessor = httpWebProcessor;
         }
 
         /// <summary>
@@ -29,29 +30,16 @@ namespace Neat.Service.Rest.Client.Proxy
         public string Request(HttpWebRequestParameters httpWebRequestParameters)
         {
             var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(httpWebRequestParameters);
+            SetupDelegates(httpWebProxyRequest);
 
             if (httpWebRequestParameters.Method == HttpRequestMethod.Post || httpWebRequestParameters.Method == HttpRequestMethod.Put)
             {
-                Stream requestStream = null;
-
-                try
-                {
-                    var requestBytes = httpWebRequestParameters.RequestBytes;
-                    requestStream = httpWebProxyRequest.HttpWebRequestBase.GetRequestStream();
-                    requestStream.Write(requestBytes, 0, requestBytes.Length);
-                }
-                finally
-                {
-                    if (requestStream != null)
-                    {
-                        requestStream.Close();
-                    }
-                }
+                ProcessRequest(httpWebProxyRequest);
             }
-
+            
             var httpWebResponse = _httpWebResponseFactory.Create(httpWebProxyRequest.HttpWebRequestBase.GetResponse() as HttpWebResponse);
 
-            return _httpWebResponseProcessor.ExtractBodyAsString(httpWebResponse);
+            return ProcessReponse(httpWebResponse, httpWebProxyRequest);
         }
 
         /// <summary>
@@ -61,6 +49,7 @@ namespace Neat.Service.Rest.Client.Proxy
         public void BeginRequest(HttpWebRequestParameters httpWebRequestParameters)
         {
             var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(httpWebRequestParameters);
+            SetupDelegates(httpWebProxyRequest);
 
             if (httpWebRequestParameters.Method == HttpRequestMethod.Post || httpWebRequestParameters.Method == HttpRequestMethod.Put)
             {
@@ -74,15 +63,24 @@ namespace Neat.Service.Rest.Client.Proxy
 
         private void GetRequestStreamCallback(IAsyncResult asyncResult)
         {
-            Stream requestStream = null;
+            var httpWebProxyRequest = asyncResult.AsyncState as HttpWebProxyRequest;
+            ProcessAsyncRequest(httpWebProxyRequest, asyncResult);
+        }
 
+        private void GetResponseCallback(IAsyncResult asyncResult)
+        {
+            var httpWebProxyRequest = asyncResult.AsyncState as HttpWebProxyRequest;
+            var httpWebResponse = _httpWebResponseFactory.Create(httpWebProxyRequest.HttpWebRequestBase.EndGetResponse(asyncResult) as HttpWebResponse);
+            ProcessReponse(httpWebResponse, httpWebProxyRequest);
+        }
+
+        private void ProcessRequest(HttpWebProxyRequest httpWebProxyRequest)
+        {
+            Stream requestStream = null;
             try
             {
-                var httpWebProxyRequest = asyncResult.AsyncState as HttpWebProxyRequest;
-                var httpWebRequest = httpWebProxyRequest.HttpWebRequestBase;
-                requestStream = httpWebRequest.EndGetRequestStream(asyncResult);
-                requestStream.Write(httpWebProxyRequest.RequestBytes, 0, httpWebProxyRequest.RequestBytes.Length);
-                httpWebRequest.BeginGetResponse(new AsyncCallback(GetResponseCallback), httpWebProxyRequest);
+                requestStream = httpWebProxyRequest.HttpWebRequestBase.GetRequestStream();
+                httpWebProxyRequest.ProcessRequestStream(httpWebProxyRequest.RequestBytes, requestStream);
             }
             finally
             {
@@ -93,12 +91,70 @@ namespace Neat.Service.Rest.Client.Proxy
             }
         }
 
-        private void GetResponseCallback(IAsyncResult asyncResult)
+        private void ProcessAsyncRequest(HttpWebProxyRequest httpWebProxyRequest, IAsyncResult asyncResult)
         {
-            var httpWebProxyRequest = asyncResult.AsyncState as HttpWebProxyRequest;
-            var httpWebRequest = httpWebProxyRequest.HttpWebRequestBase;
-            var httpWebResponse = _httpWebResponseFactory.Create(httpWebRequest.EndGetResponse(asyncResult) as HttpWebResponse);
-            httpWebProxyRequest.ResponseCallback(_httpWebResponseProcessor.ExtractBodyAsString(httpWebResponse));
+            Stream requestStream = null;
+            try
+            {
+                requestStream = httpWebProxyRequest.HttpWebRequestBase.EndGetRequestStream(asyncResult);
+                httpWebProxyRequest.ProcessRequestStream(httpWebProxyRequest.RequestBytes, requestStream);
+                httpWebProxyRequest.HttpWebRequestBase.BeginGetResponse(new AsyncCallback(GetResponseCallback), httpWebProxyRequest);
+            }
+            finally
+            {
+                if (requestStream != null)
+                {
+                    requestStream.Close();
+                }
+            }
+        }
+
+        private string ProcessReponse(HttpWebResponseBase httpWebResponse, HttpWebProxyRequest httpWebProxyRequest)
+        {
+            Stream responseStream = null;
+            try
+            {
+                responseStream = httpWebResponse.GetResponseStream();
+                var responseData = httpWebProxyRequest.ProcessResponseStream(responseStream);
+                if (httpWebProxyRequest.ResponseCallback != null)
+                {
+                    httpWebProxyRequest.ResponseCallback(responseData);
+                }
+                return responseData;
+            }
+            finally
+            {
+                if (responseStream != null)
+                {
+                    responseStream.Close();
+                }
+                if(httpWebResponse != null)
+                {
+                    httpWebResponse.Close();
+                }
+            }
+        }
+
+        private void SetupDelegates(HttpWebProxyRequest httpWebProxyRequest)
+        {
+            if (httpWebProxyRequest.ProcessRequestStream == null)
+            {
+                httpWebProxyRequest.ProcessRequestStream = ProcessRequestStream;
+            }
+            if (httpWebProxyRequest.ProcessResponseStream == null)
+            {
+                httpWebProxyRequest.ProcessResponseStream = ProcessResponseStream;
+            }
+        }
+
+        private void ProcessRequestStream(byte[] requestBytes, Stream requestStream)
+        {
+            requestStream.Write(requestBytes, 0, requestBytes.Length);
+        }
+
+        private string ProcessResponseStream(Stream responseStream)
+        {
+            return _httpWebProcessor.GetResponseDataAsString(responseStream);
         }
     }
 }

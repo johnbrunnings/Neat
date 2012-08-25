@@ -24,22 +24,21 @@ namespace Neat.Service.Test.Integration.Rest
         private IHttpWebResponseFactory _httpWebResponseFactory;
         private IHttpWebProxy _httpWebProxy;
         private IStreamReaderFactory _streamReaderFactory;
-        private IHttpWebResponseProcessor _httpWebResponseProcessor;
+        private IHttpWebProcessor _httpWebProcessor;
         private HttpWebRequestParameters _httpWebRequestParametersGet;
         private HttpWebRequestParameters _httpWebRequestParametersPost;
         private ManualResetEvent _manualResetEventGet;
         private ManualResetEvent _manualResetEventPost;
-        private Byte[] _requestBytes;
 
         [TestInitialize]
         public void Initialize()
         {
             _httpWebRequestFactory = new HttpWebRequestFactory();
-            _httpWebProxyRequestFactory = new HttpWebProxyRequestFactory(_httpWebRequestFactory);
-            _httpWebResponseFactory = new HttpWebResponseFactory();
             _streamReaderFactory = new StreamReaderFactory();
-            _httpWebResponseProcessor = new HttpWebResponseProcessor(_streamReaderFactory);
-            _httpWebProxy = new HttpWebProxy(_httpWebProxyRequestFactory, _httpWebResponseFactory, _httpWebResponseProcessor);
+            _httpWebProcessor = new HttpWebProcessor(_streamReaderFactory);
+            _httpWebProxyRequestFactory = new HttpWebProxyRequestFactory(_httpWebRequestFactory, _httpWebProcessor);
+            _httpWebResponseFactory = new HttpWebResponseFactory();
+            _httpWebProxy = new HttpWebProxy(_httpWebProxyRequestFactory, _httpWebResponseFactory, _httpWebProcessor);
             
             _httpWebRequestParametersGet = new HttpWebRequestParameters()
             {
@@ -52,16 +51,16 @@ namespace Neat.Service.Test.Integration.Rest
             };
 
             var encoding = new ASCIIEncoding();
-            _requestBytes = encoding.GetBytes(POST_DATA_TEST);
             _httpWebRequestParametersPost = new HttpWebRequestParameters()
             {
                 RequestUri = new Uri("http://httpbin.org/post"),
-                ContentLength = _requestBytes.Length,
+                RequestData = POST_DATA_TEST,
+                Encoding = encoding,
+                ContentLength = POST_DATA_TEST.Length,
                 ContentType = "*/*",
                 Method = HttpRequestMethod.Post,
                 ReadWriteTimeout = 30000,
                 Timeout = 30000,
-                RequestBytes = _requestBytes,
                 ResponseCallback = ResponseCallbackPost
             };
 

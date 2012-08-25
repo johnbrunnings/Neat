@@ -50,16 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\Client\Delegates.cs" />
     <Compile Include="Rest\Client\Factory\HttpWebProxyRequestFactory.cs" />
     <Compile Include="Rest\Client\Factory\Interface\IHttpWebProxyRequestFactory.cs" />
     <Compile Include="Rest\Client\HttpRequestMethod.cs" />
+    <Compile Include="Rest\Client\HttpWebProcessor.cs" />
     <Compile Include="Rest\Client\HttpWebProxyRequest.cs" />
     <Compile Include="Rest\Client\HttpWebRequestParameters.cs" />
-    <Compile Include="Rest\Client\HttpWebResponseProcessor.cs" />
-    <Compile Include="Rest\Client\Interface\IHttpWebResponseProcessor.cs" />
+    <Compile Include="Rest\Client\Interface\IHttpWebProcessor.cs" />
     <Compile Include="Rest\Client\Proxy\HttpWebProxy.cs" />
     <Compile Include="Rest\Client\Proxy\Interface\IHttpWebProxy.cs" />
-    <Compile Include="Rest\Client\ResponseCallback.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WindowsPhone7.Wrapper\WindowsPhone7.Wrapper.csproj">
