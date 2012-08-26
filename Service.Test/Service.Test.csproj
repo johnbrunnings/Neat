@@ -56,9 +56,13 @@
       <Project>{6ECCA2C3-D536-413A-B937-B4D9FADC583B}</Project>
       <Name>Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wrapper\Wrapper.csproj">
-      <Project>{E46B78EE-DF25-4A7B-BE62-95EB7E89262A}</Project>
-      <Name>Wrapper</Name>
+    <ProjectReference Include="..\StreamManager\StreamManager.csproj">
+      <Project>{913E28FC-70E9-4B2D-8CBA-24B2BCD6BFC9}</Project>
+      <Name>StreamManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wrapper.Web\Wrapper.Web.csproj">
+      <Project>{9238E020-9093-4061-AD1F-8DB835BDC06E}</Project>
+      <Name>Wrapper.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

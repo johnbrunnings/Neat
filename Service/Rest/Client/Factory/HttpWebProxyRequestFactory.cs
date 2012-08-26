@@ -1,7 +1,7 @@
 ﻿using Neat.Service.Rest.Client.Factory.Interface;
 using Neat.Service.Rest.Client.Interface;
-using Neat.Wrapper.Abstract;
-using Neat.Wrapper.Factory.Interface;
+using Neat.Wrapper.Web.Abstract;
+using Neat.Wrapper.Web.Factory.Interface;
 
 namespace Neat.Service.Rest.Client.Factory
 {
@@ -43,7 +43,7 @@ namespace Neat.Service.Rest.Client.Factory
         {
             httpWebRequest.Method = httpWebRequestParameters.Method.ToString().ToUpperInvariant();
             httpWebRequest.ContentType = httpWebRequestParameters.ContentType;
-            if (httpWebRequestParameters.Method == HttpRequestMethod.Post || httpWebRequestParameters.Method == HttpRequestMethod.Put)
+            if (httpWebRequestParameters.Method == HttpMethod.Post || httpWebRequestParameters.Method == HttpMethod.Put)
             {
                 httpWebRequest.ContentLength = httpWebRequestParameters.ContentLength;
             }

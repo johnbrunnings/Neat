@@ -6,7 +6,7 @@ namespace Neat.Service.Rest.Client
     public class HttpWebRequestParameters
     {
         public Uri RequestUri { get; set; }
-        public HttpRequestMethod Method { get; set; }
+        public HttpMethod Method { get; set; }
         public byte[] RequestBytes { get; set; }
         public string RequestData { get; set; }
         public Encoding Encoding { get; set; }

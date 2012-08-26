@@ -4,8 +4,8 @@ using System.Net;
 using Neat.Service.Rest.Client.Factory.Interface;
 using Neat.Service.Rest.Client.Interface;
 using Neat.Service.Rest.Client.Proxy.Interface;
-using Neat.Wrapper.Abstract;
-using Neat.Wrapper.Factory.Interface;
+using Neat.Wrapper.Web.Abstract;
+using Neat.Wrapper.Web.Factory.Interface;
 
 namespace Neat.Service.Rest.Client.Proxy
 {
@@ -32,7 +32,7 @@ namespace Neat.Service.Rest.Client.Proxy
             var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(httpWebRequestParameters);
             SetupDelegates(httpWebProxyRequest);
 
-            if (httpWebRequestParameters.Method == HttpRequestMethod.Post || httpWebRequestParameters.Method == HttpRequestMethod.Put)
+            if (httpWebRequestParameters.Method == HttpMethod.Post || httpWebRequestParameters.Method == HttpMethod.Put)
             {
                 ProcessRequest(httpWebProxyRequest);
             }
@@ -51,7 +51,7 @@ namespace Neat.Service.Rest.Client.Proxy
             var httpWebProxyRequest = _httpWebProxyRequestFactory.Create(httpWebRequestParameters);
             SetupDelegates(httpWebProxyRequest);
 
-            if (httpWebRequestParameters.Method == HttpRequestMethod.Post || httpWebRequestParameters.Method == HttpRequestMethod.Put)
+            if (httpWebRequestParameters.Method == HttpMethod.Post || httpWebRequestParameters.Method == HttpMethod.Put)
             {
                 httpWebProxyRequest.HttpWebRequestBase.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), httpWebProxyRequest);
             }

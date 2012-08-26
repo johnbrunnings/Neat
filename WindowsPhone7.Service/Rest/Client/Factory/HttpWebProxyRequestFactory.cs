@@ -1,7 +1,7 @@
 ﻿using Neat.WindowsPhone7.Service.Rest.Client.Factory.Interface;
 using Neat.WindowsPhone7.Service.Rest.Client.Interface;
-using Neat.WindowsPhone7.Wrapper.Abstract;
-using Neat.WindowsPhone7.Wrapper.Factory.Interface;
+using Neat.WindowsPhone7.Wrapper.Web.Abstract;
+using Neat.WindowsPhone7.Wrapper.Web.Factory.Interface;
 
 namespace Neat.WindowsPhone7.Service.Rest.Client.Factory
 {

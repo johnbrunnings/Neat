@@ -1,4 +1,4 @@
-﻿using Neat.Wrapper.Abstract;
+﻿using Neat.Wrapper.Web.Abstract;
 
 namespace Neat.Service.Rest.Client
 {
@@ -8,7 +8,7 @@ namespace Neat.Service.Rest.Client
         public ProcessRequestStream ProcessRequestStream { get; set; }
         public ProcessResponseStream ProcessResponseStream { get; set; }
         public ResponseCallback ResponseCallback { get; set; }
-        public HttpRequestMethod Method { get; set; }
+        public HttpMethod Method { get; set; }
         public byte[] RequestBytes { get; set; }
     }
 }

@@ -8,8 +8,10 @@ using Neat.Service.Rest.Client.Factory.Interface;
 using Neat.Service.Rest.Client.Interface;
 using Neat.Service.Rest.Client.Proxy;
 using Neat.Service.Rest.Client.Proxy.Interface;
-using Neat.Wrapper.Factory;
-using Neat.Wrapper.Factory.Interface;
+using Neat.StreamManager.Factory.ReaderFactory;
+using Neat.StreamManager.Factory.ReaderFactory.Interface;
+using Neat.Wrapper.Web.Factory;
+using Neat.Wrapper.Web.Factory.Interface;
 
 namespace Neat.Service.Test.Integration.Rest
 {
@@ -23,7 +25,7 @@ namespace Neat.Service.Test.Integration.Rest
         private IHttpWebProxyRequestFactory _httpWebProxyRequestFactory;
         private IHttpWebResponseFactory _httpWebResponseFactory;
         private IHttpWebProxy _httpWebProxy;
-        private IStreamReaderFactory _streamReaderFactory;
+        private ITextReaderFactory _streamReaderFactory;
         private IHttpWebProcessor _httpWebProcessor;
         private HttpWebRequestParameters _httpWebRequestParametersGet;
         private HttpWebRequestParameters _httpWebRequestParametersPost;
@@ -44,7 +46,7 @@ namespace Neat.Service.Test.Integration.Rest
             {
                 RequestUri = new Uri("http://httpbin.org/get"),
                 ContentType = "*/*",
-                Method = HttpRequestMethod.Get,
+                Method = HttpMethod.Get,
                 ReadWriteTimeout = 30000,
                 Timeout = 30000,
                 ResponseCallback = ResponseCallbackGet
@@ -58,7 +60,7 @@ namespace Neat.Service.Test.Integration.Rest
                 Encoding = encoding,
                 ContentLength = POST_DATA_TEST.Length,
                 ContentType = "*/*",
-                Method = HttpRequestMethod.Post,
+                Method = HttpMethod.Post,
                 ReadWriteTimeout = 30000,
                 Timeout = 30000,
                 ResponseCallback = ResponseCallbackPost

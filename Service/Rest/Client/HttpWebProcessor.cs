@@ -1,16 +1,16 @@
 ﻿using System.IO;
 using System.Text;
 using Neat.Service.Rest.Client.Interface;
-using Neat.Wrapper.Abstract;
-using Neat.Wrapper.Factory.Interface;
+using Neat.StreamManager.Factory.ReaderFactory.Interface;
+using Neat.StreamManager.Factory.ReaderFactory.Parameters;
 
 namespace Neat.Service.Rest.Client
 {
     public class HttpWebProcessor : IHttpWebProcessor
     {
-        private readonly IStreamReaderFactory _streamReaderFactory;
+        private readonly ITextReaderFactory _streamReaderFactory;
 
-        public HttpWebProcessor(IStreamReaderFactory streamReaderFactory)
+        public HttpWebProcessor(ITextReaderFactory streamReaderFactory)
         {
             _streamReaderFactory = streamReaderFactory;
         }
@@ -23,11 +23,15 @@ namespace Neat.Service.Rest.Client
         public string GetResponseDataAsString(Stream responseStream)
         {
             string responseData;
-            StreamReaderBase responseStreamReader = null;
+            var streamReaderParameters = new StreamReaderParameters()
+            {
+                Stream = responseStream
+            };
+            TextReader responseStreamReader = null;
 
             try
             {
-                responseStreamReader = _streamReaderFactory.Create(responseStream);
+                responseStreamReader = _streamReaderFactory.Create(streamReaderParameters);
                 responseData = responseStreamReader.ReadToEnd().Trim();
             }
             finally
