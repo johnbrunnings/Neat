@@ -62,9 +62,9 @@
     <Compile Include="Rest\Client\Proxy\Interface\IHttpWebProxy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WindowsPhone7.StreamManager\WindowsPhone7.StreamManager.csproj">
-      <Project>{872FDDAA-7959-466B-94E0-9D2D304E0CB7}</Project>
-      <Name>WindowsPhone7.StreamManager</Name>
+    <ProjectReference Include="..\WindowsPhone7.Wrapper.Stream\WindowsPhone7.Wrapper.Stream.csproj">
+      <Project>{180C3582-2CCB-4F39-B72D-B5CECE5ECD0C}</Project>
+      <Name>WindowsPhone7.Wrapper.Stream</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsPhone7.Wrapper.Web\WindowsPhone7.Wrapper.Web.csproj">
       <Project>{DEE3BCC8-ED7E-4002-8FAE-62BDADB5A037}</Project>

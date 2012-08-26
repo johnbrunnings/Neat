@@ -14,7 +14,13 @@ namespace Neat.Wrapper.Web
     public class HttpWebRequestWrapper : HttpWebRequestBase
     {
         private readonly HttpWebRequest _httpWebRequest;
-        public override object GetLifetimeService()
+
+        public HttpWebRequestWrapper(HttpWebRequest httpWebRequest)
+        {
+            _httpWebRequest = httpWebRequest;
+        }
+
+        public new object GetLifetimeService()
         {
             return _httpWebRequest.GetLifetimeService();
         }
@@ -29,7 +35,7 @@ namespace Neat.Wrapper.Web
             return _httpWebRequest.CreateObjRef(requestedType);
         }
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             ((ISerializable) _httpWebRequest).GetObjectData(info, context);
         }
@@ -40,13 +46,13 @@ namespace Neat.Wrapper.Web
             set { _httpWebRequest.CachePolicy = value; }
         }
 
-        public override AuthenticationLevel AuthenticationLevel
+        public new AuthenticationLevel AuthenticationLevel
         {
             get { return _httpWebRequest.AuthenticationLevel; }
             set { _httpWebRequest.AuthenticationLevel = value; }
         }
 
-        public override TokenImpersonationLevel ImpersonationLevel
+        public new TokenImpersonationLevel ImpersonationLevel
         {
             get { return _httpWebRequest.ImpersonationLevel; }
             set { _httpWebRequest.ImpersonationLevel = value; }
@@ -359,11 +365,6 @@ namespace Neat.Wrapper.Web
         {
             get { return _httpWebRequest.Date; }
             set { _httpWebRequest.Date = value; }
-        }
-
-        public HttpWebRequestWrapper(HttpWebRequest httpWebRequest)
-        {
-            _httpWebRequest = httpWebRequest;
         }
     }
 }

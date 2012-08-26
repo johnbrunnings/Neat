@@ -10,7 +10,13 @@ namespace Neat.Wrapper.Web
     public class HttpWebResponseWrapper : HttpWebResponseBase
     {
         private readonly HttpWebResponse _httpWebResponse;
-        public override object GetLifetimeService()
+
+        public HttpWebResponseWrapper(HttpWebResponse httpWebResponse)
+        {
+            _httpWebResponse = httpWebResponse;
+        }
+
+        public new object GetLifetimeService()
         {
             return _httpWebResponse.GetLifetimeService();
         }
@@ -25,7 +31,7 @@ namespace Neat.Wrapper.Web
             return _httpWebResponse.CreateObjRef(requestedType);
         }
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             ((ISerializable) _httpWebResponse).GetObjectData(info, context);
         }
@@ -126,11 +132,6 @@ namespace Neat.Wrapper.Web
         public override string Method
         {
             get { return _httpWebResponse.Method; }
-        }
-
-        public HttpWebResponseWrapper(HttpWebResponse httpWebResponse)
-        {
-            _httpWebResponse = httpWebResponse;
         }
     }
 }

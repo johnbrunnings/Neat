@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Abstract\HttpWebRequestBase.cs" />
     <Compile Include="Abstract\HttpWebResponseBase.cs" />
-    <Compile Include="Abstract\StreamReaderBase.cs" />
     <Compile Include="Factory\HttpWebRequestFactory.cs" />
     <Compile Include="Factory\HttpWebResponseFactory.cs" />
     <Compile Include="Factory\Interface\IHttpWebRequestFactory.cs" />

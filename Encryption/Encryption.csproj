@@ -41,12 +41,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="Parameters\Abstract\EncryptionParameters.cs" />
+    <Compile Include="Parameters\AesEncryptionParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderFactory\AesCryptoServiceProviderFactory.cs" />
+    <Compile Include="ProviderFactory\Interface\IAesCryptoServiceProviderFactory.cs" />
     <Compile Include="Strategy\AesEncryptionStrategy.cs" />
     <Compile Include="Strategy\Interface\IEncryptionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interface\" />
+    <Folder Include="Strategy\Abstract\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wrapper.Stream\Wrapper.Stream.csproj">
+      <Project>{B0AC1973-5F47-4A36-9BDE-04E7BC0B3E55}</Project>
+      <Name>Wrapper.Stream</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

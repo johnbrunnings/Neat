@@ -48,9 +48,9 @@
     <Compile Include="Rest\Client\Proxy\Interface\IHttpWebProxy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StreamManager\StreamManager.csproj">
-      <Project>{913E28FC-70E9-4B2D-8CBA-24B2BCD6BFC9}</Project>
-      <Name>StreamManager</Name>
+    <ProjectReference Include="..\Wrapper.Stream\Wrapper.Stream.csproj">
+      <Project>{B0AC1973-5F47-4A36-9BDE-04E7BC0B3E55}</Project>
+      <Name>Wrapper.Stream</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wrapper.Web\Wrapper.Web.csproj">
       <Project>{9238E020-9093-4061-AD1F-8DB835BDC06E}</Project>
