@@ -61,7 +61,6 @@ namespace Neat.WindowsPhone7.Service.Rest.Client.Proxy
             {
                 requestStream = httpWebProxyRequest.HttpWebRequestBase.EndGetRequestStream(asyncResult);
                 httpWebProxyRequest.ProcessRequestStream(httpWebProxyRequest.RequestBytes, requestStream);
-                httpWebProxyRequest.HttpWebRequestBase.BeginGetResponse(new AsyncCallback(GetResponseCallback), httpWebProxyRequest);
             }
             finally
             {
@@ -70,19 +69,17 @@ namespace Neat.WindowsPhone7.Service.Rest.Client.Proxy
                     requestStream.Close();
                 }
             }
+            httpWebProxyRequest.HttpWebRequestBase.BeginGetResponse(new AsyncCallback(GetResponseCallback), httpWebProxyRequest);
         }
 
         private void ProcessReponse(HttpWebResponseBase httpWebResponse, HttpWebProxyRequest httpWebProxyRequest)
         {
+            string responseData = null;
             Stream responseStream = null;
             try
             {
                 responseStream = httpWebResponse.GetResponseStream();
-                var responseData = httpWebProxyRequest.ProcessResponseStream(responseStream);
-                if (httpWebProxyRequest.ResponseCallback != null)
-                {
-                    httpWebProxyRequest.ResponseCallback(responseData);
-                }
+                responseData = httpWebProxyRequest.ProcessResponseStream(responseStream);
             }
             finally
             {
@@ -94,6 +91,10 @@ namespace Neat.WindowsPhone7.Service.Rest.Client.Proxy
                 {
                     httpWebResponse.Close();
                 }
+            }
+            if (httpWebProxyRequest.ResponseCallback != null)
+            {
+                httpWebProxyRequest.ResponseCallback(responseData);
             }
         }
 
