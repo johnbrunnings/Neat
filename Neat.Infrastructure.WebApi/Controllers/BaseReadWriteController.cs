@@ -40,7 +40,7 @@ namespace Neat.Infrastructure.WebApi.Controllers
             _domainService.Update(entity);
         }
 
-        // GET api/{T}/{id}
+        // GET api/{T}/getempty
         [HttpGet]
         public T GetEmpty()
         {

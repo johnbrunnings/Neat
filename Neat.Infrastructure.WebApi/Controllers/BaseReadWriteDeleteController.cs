@@ -46,7 +46,7 @@ namespace Neat.Infrastructure.WebApi.Controllers
             _domainService.Delete(id);
         }
 
-        // GET api/{T}/{id}
+        // GET api/{T}/getempty
         [HttpGet]
         public T GetEmpty()
         {

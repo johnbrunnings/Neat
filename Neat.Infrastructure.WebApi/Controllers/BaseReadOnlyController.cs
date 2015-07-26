@@ -28,7 +28,7 @@ namespace Neat.Infrastructure.WebApi.Controllers
             return _domainService.GetById(id);
         }
 
-        // GET api/{T}
+        // GET api/{T}/getempty
         [HttpGet]
         public T GetEmpty()
         {
