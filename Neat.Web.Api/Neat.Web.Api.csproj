@@ -148,6 +148,7 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\NeatController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -164,6 +165,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Neat.Infrastructure.Security\Neat.Infrastructure.Security.csproj">
+      <Project>{18832fca-045d-47d5-b8e1-a490d3afab83}</Project>
+      <Name>Neat.Infrastructure.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Neat.Infrastructure.WebApi\Neat.Infrastructure.WebApi.csproj">
       <Project>{c0293f29-daac-42b5-a416-26902175bf69}</Project>
       <Name>Neat.Infrastructure.WebApi</Name>

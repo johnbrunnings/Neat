@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Infrastructure", "Neat.Infrastructure\Neat.Infrastructure.csproj", "{858463D3-8E17-46AB-8EA3-5EE858FECC84}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Model", "Neat.Model\Neat.Model.csproj", "{BAB323BC-6DA7-4551-87CB-370F6803988D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Web.Api", "Neat.Web.Api\Neat.Web.Api.csproj", "{E28FBCA1-86D0-468F-AD56-8A7291B79012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Infrastructure.Security", "Neat.Infrastructure.Security\Neat.Infrastructure.Security.csproj", "{18832FCA-045D-47D5-B8E1-A490D3AFAB83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{E28FBCA1-86D0-468F-AD56-8A7291B79012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E28FBCA1-86D0-468F-AD56-8A7291B79012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E28FBCA1-86D0-468F-AD56-8A7291B79012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18832FCA-045D-47D5-B8E1-A490D3AFAB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18832FCA-045D-47D5-B8E1-A490D3AFAB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18832FCA-045D-47D5-B8E1-A490D3AFAB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18832FCA-045D-47D5-B8E1-A490D3AFAB83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

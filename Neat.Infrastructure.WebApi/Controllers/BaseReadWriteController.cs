@@ -6,7 +6,7 @@ using Neat.Service;
 
 namespace Neat.Infrastructure.WebApi.Controllers
 {
-    public class BaseReadWriteController<T> : BaseApiController where T : class, IEntity<string>, new()
+    public abstract class BaseReadWriteController<T> : BaseApiController where T : class, IEntity<string>, new()
     {
         private readonly IDomainService<T> _domainService;
 
