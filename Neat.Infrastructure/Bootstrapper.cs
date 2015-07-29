@@ -28,6 +28,7 @@ namespace Neat.Infrastructure
             container.RegisterType<IApplicationProcessor, ApplicationProcessor>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEncryptionProvider, AesEncryptionProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IHashProvider, Sha512HashProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IEncryptionContext, EncryptionContext>(new ContainerControlledLifetimeManager());
 
             // Bypass normal LoggingContainer registration to prevent Stack Overflow
             ((LoggingUnityContainer)container).RegisterTypeWithoutLogging(typeof(ILogProvider), typeof(NLogProvider), null, new ContainerControlledLifetimeManager());

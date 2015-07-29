@@ -93,6 +93,8 @@
     <Compile Include="Config\IConfig.cs" />
     <Compile Include="Config\MsXmlConfig.cs" />
     <Compile Include="Encryption\AesEncryptionProvider.cs" />
+    <Compile Include="Encryption\EncryptionContext.cs" />
+    <Compile Include="Encryption\IEncryptionContext.cs" />
     <Compile Include="Encryption\IEncryptionProvider.cs" />
     <Compile Include="Encryption\IHashProvider.cs" />
     <Compile Include="Encryption\Sha512HashProvider.cs" />
