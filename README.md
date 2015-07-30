@@ -2,8 +2,8 @@
 
 1. Pull this repo
 2. Build in VS2013+ (report any build errors as an Issue)
-3. Host the Neat.Web.Api project (see [[Basic IIS Setup for NEAT]])
-4. Create new 'neat' database on your local MongoDB instance (see [[here]] for how to setup mongo locally)
+3. Host the Neat.Web.Api project
+4. Create new 'neat' database on your local MongoDB instance
 
 
 test: 
