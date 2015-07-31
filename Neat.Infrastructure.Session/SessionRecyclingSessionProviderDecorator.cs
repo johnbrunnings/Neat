@@ -51,8 +51,6 @@ namespace Neat.Infrastructure.Session
                     var currentSessionDuration = now - session.StartDate;
                     if (currentSessionDuration > _sessionContext.SessionRecyclingDuration)
                     {
-                        _sessionProvider.Logout(session.UserId);
-
                         var sessionGraceDuration = _sessionContext.SessionGraceDuration;
                         var graceSessionExpirationDate = now
                                                             .AddDays(sessionGraceDuration.Days)
@@ -61,10 +59,12 @@ namespace Neat.Infrastructure.Session
                                                             .AddSeconds(sessionGraceDuration.Seconds);
                         var graceSession = new SessionGrace()
                         {
+                            SessionId = session.Id,
                             GraceStartDate = now,
                             GraceExpirationDate = graceSessionExpirationDate
                         };
                         _sessionGraceStorageProvider.Add(graceSession);
+                        _sessionProvider.Logout(session.UserId);
 
                         var remainingSessionDuration = session.ExpirationDate - now;
                         var sessionDurationRequest = new SessionDurationRequest()
