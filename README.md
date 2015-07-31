@@ -25,15 +25,14 @@ Next steps:
 1. Make changes to the Neat.Model.NeatExample class. (Don't forget to rebuild!)  For example:
 
 ```
-    public class NeatExample : BaseModel
-    {
-        public string Name { get; set; }
-        public DateTime CreateDate { get; set; }
-        public int SomeNumber { get; set; }
-        public string ETag { get; set; }
-        public MoreNeatStuff More { get; set; }
-    }
-
+public class NeatExample : BaseModel
+{
+	public string Name { get; set; }
+	public DateTime CreateDate { get; set; }
+	public int SomeNumber { get; set; }
+	public string ETag { get; set; }
+	public MoreNeatStuff More { get; set; }
+}
 ```
 Use your favorite REST client to POST to /neat:
 ```
@@ -41,6 +40,8 @@ Use your favorite REST client to POST to /neat:
 
 }
 ```
+
+There are <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-icon" target="_blank">POSTMAN<a> collections stored in the Neat.Test.Postman directory.
 
 It's ok we've got nothing there yet...
 
