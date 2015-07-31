@@ -41,7 +41,7 @@ Use your favorite REST client to POST to /neat:
 }
 ```
 
-There are <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-icon" target="_blank">POSTMAN<a> collections stored in the Neat.Test.Postman directory.
+(There are <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-icon" target="_blank">POSTMAN<a> collections stored in the Neat.Test.Postman directory.)
 
 It's ok we've got nothing there yet...
 
