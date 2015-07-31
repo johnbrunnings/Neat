@@ -22,7 +22,7 @@ If this is what you get, congrats! You're all setup. If not, report an issue.
 
 Next steps:
 
-1. Make changes to the Neat.Model.NeatExample class. (Don't forget to rebuild!)  For example:
+* Make changes to the Neat.Model.NeatExample class. (Don't forget to rebuild!)  For example:
 
 ```
 public class NeatExample : BaseModel
@@ -62,5 +62,5 @@ Go query again:  http://localhost/neat
 ```
 
 
-2. Add a new Model class and Controller class, reference the NeatExample and NeatController. Hit those with similar API calls. 
+* Add a new Model class and Controller class, reference the NeatExample and NeatController. Hit those with similar API calls. 
 Try creating a Customer Model and Controller then hitting http://localhost/customer.
