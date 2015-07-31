@@ -23,9 +23,9 @@ namespace Neat.Service
             return _domainApplication.GetById(id);
         }
 
-        public void Add(T entity)
+        public T Add(T entity)
         {
-            _domainApplication.Add(entity);
+            return _domainApplication.Add(entity);
         }
 
         public void Update(T entity)

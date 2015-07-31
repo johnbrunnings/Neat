@@ -1,46 +1,45 @@
-﻿using Neat.Infrastructure.Security.Model;
+﻿using System.Linq;
+using Neat.Infrastructure.Security.Model;
 
 namespace Neat.Infrastructure.Security.Storage
 {
     public class SecurityStorageProvider : ISecurityStorageProvider
     {
         private readonly IStorageApplication<User> _userStorageApplication;
-        private readonly IStorageApplication<Session> _sessionStorageApplication;
 
-        public SecurityStorageProvider(IStorageApplication<User> userStorageApplication, IStorageApplication<Session> sessionStorageApplication)
+        public SecurityStorageProvider(IStorageApplication<User> userStorageApplication)
         {
             _userStorageApplication = userStorageApplication;
-            _sessionStorageApplication = sessionStorageApplication;
         }
 
-        public void CreateUser(User user)
+        public IQueryable<User> GetAll()
         {
-            _userStorageApplication.Add(user);
+            return _userStorageApplication.GetAll();
         }
 
-        public User GetUserById(string id)
+        public User GetById(string id)
         {
             return _userStorageApplication.GetById(id);
         }
 
-        public void UpdateUser(User user)
+        public User Add(User entity)
         {
-            _userStorageApplication.Update(user);
+            return _userStorageApplication.Add(entity);
         }
 
-        public void CreateSession(Session session)
+        public void Update(User entity)
         {
-            _sessionStorageApplication.Add(session);
+            _userStorageApplication.Update(entity);
         }
 
-        public Session GetById(string id)
+        public void Delete(User entity)
         {
-            return _sessionStorageApplication.GetById(id);
+            _userStorageApplication.Delete(entity);
         }
 
-        public void UpdateSession(Session session)
+        public void Delete(string id)
         {
-            _sessionStorageApplication.Update(session);
+            _userStorageApplication.Delete(id);
         }
     }
 }

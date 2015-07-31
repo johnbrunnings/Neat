@@ -24,9 +24,9 @@ namespace Neat.Data.Mongo
             return _repository.GetById(id);
         }
 
-        public void Add(T entity)
+        public T Add(T entity)
         {
-            _repository.Add(entity);
+            return _repository.Add(entity);
         }
 
         public void Update(T entity)

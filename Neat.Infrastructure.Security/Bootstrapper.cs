@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
+using Neat.Infrastructure.Security.Context;
 using Neat.Infrastructure.Security.Storage;
 
 namespace Neat.Infrastructure.Security
@@ -28,6 +29,8 @@ namespace Neat.Infrastructure.Security
             container.RegisterType<ISecurityAccessTokenProvider, SecurityAccessTokenProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAuthorizationProvider, SecurityAuthorizationProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAuthenticationProvider, SecurityAuthenticationProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecurityUserProvider, SecurityUserProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecurityContext, SecurityContext>(new ContainerControlledLifetimeManager());
         }
     }
 }

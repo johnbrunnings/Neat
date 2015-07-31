@@ -1,5 +1,4 @@
-﻿using System;
-using Neat.Infrastructure.Security.Model.Response;
+﻿using Neat.Infrastructure.Security.Model.Response;
 
 namespace Neat.Infrastructure.Security
 {
@@ -14,18 +13,26 @@ namespace Neat.Infrastructure.Security
 
         public AuthorizationResponse GetAuthorizationForAccessToken(string accessToken)
         {
-            var session = _securityAccessTokenProvider.GetSessionFromAccessToken(accessToken);
-            var authorizationResponse = new AuthorizationResponse()
+            var user = _securityAccessTokenProvider.GetUserFromAccessToken(accessToken);
+            var authorizationResponse = new AuthorizationResponse();
+
+            if (user != null)
             {
-                UserId = session.UserId,
-                IsAuthorized = DateTime.UtcNow <= session.ExpirationDate
-            };
+                authorizationResponse.UserId = user.Id;
+                authorizationResponse.IsAuthorized = true;
+            }
+            
             if (!authorizationResponse.IsAuthorized)
             {
-                authorizationResponse.AuthorizationMessage = string.Format("Session has expired!");
+                authorizationResponse.AuthorizationMessage = string.Format("Session Has Expired!");
             }
 
             return authorizationResponse;
+        }
+
+        public string GetAccessTokenForLoggedInUser(string userId)
+        {
+            return _securityAccessTokenProvider.GetAccessToken(userId);
         }
     }
 }

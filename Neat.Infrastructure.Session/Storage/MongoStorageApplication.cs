@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using MongoRepository;
 
-namespace Neat.Infrastructure.Security.Storage
+namespace Neat.Infrastructure.Session.Storage
 {
     public class MongoStorageApplication<T> : IStorageApplication<T> where T : class, IEntity<string>, new()
     {

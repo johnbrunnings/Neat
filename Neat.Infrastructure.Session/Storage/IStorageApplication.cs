@@ -1,9 +1,9 @@
 using System.Linq;
 using MongoRepository;
 
-namespace Neat.Application
+namespace Neat.Infrastructure.Session.Storage
 {
-    public interface IDomainApplication<T> where T : class, IEntity<string>, new()
+    public interface IStorageApplication<T> where T : class, IEntity<string>, new()
     {
         IQueryable<T> GetAll();
         T GetById(string id);
