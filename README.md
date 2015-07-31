@@ -47,7 +47,7 @@ It's ok we've got nothing there yet...
 
 You should get back a 204 No Content, that's good! The record saved (if it had not, you would have gotten an error).
 
-Go query again:  /neat
+Go query again:  http://localhost/neat
 ```
 [
   {
@@ -61,4 +61,6 @@ Go query again:  /neat
 ]
 ```
 
-2. Add a new Model class and Controller class, reference the NeatExample and NeatController.
+
+2. Add a new Model class and Controller class, reference the NeatExample and NeatController. Hit those with similar API calls. 
+Try creating a Customer Model and Controller then hitting http://localhost/customer.
