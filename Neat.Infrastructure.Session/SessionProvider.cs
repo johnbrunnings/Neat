@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using Neat.Infrastructure.Session.Model.Request;
 using Neat.Infrastructure.Session.Storage;
 
@@ -29,6 +30,7 @@ namespace Neat.Infrastructure.Session
             };
 
             _sessionStorageProvider.Add(session);
+            SetCurrentSession(session);
 
             return session;
         }
@@ -41,10 +43,24 @@ namespace Neat.Infrastructure.Session
             return session;
         }
 
+        public Model.Session GetCurrentSession()
+        {
+            return HttpContext.Current.Items["Session"] as Model.Session;
+        }
+
+        public void SetCurrentSession(Model.Session session)
+        {
+            HttpContext.Current.Items["Session"] = session;
+        }
+
         public Model.Session ValidateSession(Model.Session session)
         {
             var now = DateTime.UtcNow;
             var existingSession = _sessionStorageProvider.GetAll().FirstOrDefault(s => s.Id == session.Id && s.StartDate <= now && s.ExpirationDate >= now);
+            if (existingSession != null)
+            {
+                SetCurrentSession(existingSession);
+            }
 
             return existingSession;
         }

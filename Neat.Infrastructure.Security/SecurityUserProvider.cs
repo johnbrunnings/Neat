@@ -3,6 +3,7 @@ using Neat.Infrastructure.Security.Context;
 using Neat.Infrastructure.Security.Model;
 using Neat.Infrastructure.Security.Model.Request;
 using Neat.Infrastructure.Security.Storage;
+using Neat.Infrastructure.Session;
 
 namespace Neat.Infrastructure.Security
 {
@@ -12,13 +13,15 @@ namespace Neat.Infrastructure.Security
         private readonly ISecurityAccessTokenProvider _securityAccessTokenProvider;
         private readonly IEncryptionProvider _encryptionProvider;
         private readonly ISecurityContext _securityContext;
+        private readonly ISessionProvider _sessionProvider;
 
-        public SecurityUserProvider(ISecurityStorageProvider securityStorageProvider, ISecurityAccessTokenProvider securityAccessTokenProvider, IEncryptionProvider encryptionProvider, ISecurityContext securityContext)
+        public SecurityUserProvider(ISecurityStorageProvider securityStorageProvider, ISecurityAccessTokenProvider securityAccessTokenProvider, IEncryptionProvider encryptionProvider, ISecurityContext securityContext, ISessionProvider sessionProvider)
         {
             _securityStorageProvider = securityStorageProvider;
             _securityAccessTokenProvider = securityAccessTokenProvider;
             _encryptionProvider = encryptionProvider;
             _securityContext = securityContext;
+            _sessionProvider = sessionProvider;
         }
 
         public string CreateUser(User user)
@@ -53,6 +56,17 @@ namespace Neat.Infrastructure.Security
         public User GetUser(string userId)
         {
             return _securityStorageProvider.GetById(userId);
+        }
+
+        public User GetCurrentUser()
+        {
+            var session = _sessionProvider.GetCurrentSession();
+            if (session == null)
+            {
+                return null;
+            }
+
+            return _securityStorageProvider.GetById(session.UserId);
         }
     }
 }

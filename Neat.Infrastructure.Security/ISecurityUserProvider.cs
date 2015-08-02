@@ -7,5 +7,6 @@ namespace Neat.Infrastructure.Security
         string CreateUser(User user);
         void UpdateUser(User user);
         User GetUser(string userId);
+        User GetCurrentUser();
     }
 }

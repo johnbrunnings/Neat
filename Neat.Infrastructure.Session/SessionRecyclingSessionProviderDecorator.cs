@@ -30,6 +30,16 @@ namespace Neat.Infrastructure.Session
             return _sessionProvider.GetSession(userId);
         }
 
+        public Model.Session GetCurrentSession()
+        {
+            return _sessionProvider.GetCurrentSession();
+        }
+
+        public void SetCurrentSession(Model.Session session)
+        {
+            _sessionProvider.SetCurrentSession(session);
+        }
+
         public Model.Session ValidateSession(Model.Session session)
         {
             var now = DateTime.UtcNow;
@@ -45,6 +55,7 @@ namespace Neat.Infrastructure.Session
                         return null;
                     }
                     returnSession = _sessionProvider.GetSession(session.UserId);
+                    _sessionProvider.SetCurrentSession(returnSession);
                 }
                 else
                 {

@@ -32,7 +32,15 @@ namespace Neat.Infrastructure.Security
                 Seconds = userAuthenticationRequest.Duration.Seconds
             };
 
-            var session = _sessionProvider.CreateSession(userId, sessionDurationRequest);
+            var session = _sessionProvider.GetSession(userId);
+            if (session == null)
+            {
+                session = _sessionProvider.CreateSession(userId, sessionDurationRequest);
+            }
+            else
+            {
+                session = _sessionProvider.ValidateSession(session);
+            }
 
             return _encryptionProvider.Encrypt(JsonConvert.SerializeObject(session));
         }
