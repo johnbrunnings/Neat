@@ -14,7 +14,9 @@ namespace Neat.Application
         T Add(T entity);
         [SecuredAction(Action = "Update", Parameters = "entity")]
         void Update(T entity);
+        [SecuredAction(Action = "Delete", Parameters = "entity")]
         void Delete(T entity);
+        [SecuredAction(Action = "Delete", Parameters = "id")]
         void Delete(string id);
     }
 }

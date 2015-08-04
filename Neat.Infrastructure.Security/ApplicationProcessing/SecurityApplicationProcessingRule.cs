@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Security;
@@ -31,72 +32,81 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
             get { return typeof (SecuredActionAttribute); }
         }
 
-        public object ProcessAfter(object input, IList<CustomAttributeNamedArgument> customAttributeNamedArguments)
+        // TODO: Break in to Supporting Objects, User, Object, and Field Level Security Processing
+        public object ProcessAfter(object output, IList<CustomAttributeNamedArgument> customAttributeNamedArguments)
         {
-            if (_securityContext.EnableFieldLevelSecurity)
+            var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
+            if (action == null)
             {
-                var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
-                var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
-                if (action != null && action == "Read" && parameters == null)
+                throw new ConfigurationException("No Security Action Specified for Method!");
+            }
+            if (_securityContext.EnableObjectLevelSecurity)
+            {
+                if (action == "Read")
                 {
-                    var isQueryable = false;
-                    var inputQuerable = input as IQueryable;
-                    var inputEnumerable = input as IEnumerable;
-                    if (inputQuerable != null)
+                    var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
+                    if (parameters != null)
                     {
-                        isQueryable = true;
+                        throw new ConfigurationException("Incorrect Parameter Setup, Do Not Specify Parameters on Read Security!");
                     }
-                    if (inputEnumerable != null)
+                    // NOTE: Makes Assumption on Enumerable and Querable Collections only
+                    var outputEnumerable = output as IEnumerable;
+                    var outputQuerable = output as IQueryable;
+                    if (outputEnumerable != null)
                     {
-                        var counter = 0;
-                        var inputType = input.GetType();
-                        var inputGenericArgs = new Type[0];
-                        var buildType = typeof (List<>);
-                        if (inputType.IsGenericType)
+                        var outputType = output.GetType();
+                        var outputList = output as IList;
+                        if (outputType.IsGenericType)
                         {
-                            inputGenericArgs = inputType.GetGenericArguments();
-                            buildType = buildType.MakeGenericType(inputGenericArgs);
+                            var outputGenericArgs = new Type[0];
+                            var buildType = typeof(List<>);
+                            outputGenericArgs = outputType.GetGenericArguments();
+                            buildType = buildType.MakeGenericType(outputGenericArgs);
+                            var outputGeneric = Activator.CreateInstance(buildType);
+                            outputList = outputGeneric as IList;
                         }
-                        input = Activator.CreateInstance(buildType);
-                        var inputList = input as IList;
-                        foreach (var inputItem in inputEnumerable)
+                        
+                        // TODO: Do a bit more work on making this List for other scenarios
+                        foreach (var outputItem in outputEnumerable)
                         {
-                            var response = _securityAuthorizationProvider.CheckObjectAuthorization(inputItem, null, action);
+                            var response = _securityAuthorizationProvider.CheckObjectAuthorization(outputItem, null, action);
                             if (response.IsAuthorized)
                             {
-                                inputList.Add(response.SecuredObject);
+                                outputList.Add(response.SecuredObject);
                             }
-
-                            counter++;
                         }
-                        if (isQueryable)
+                        if (outputQuerable != null)
                         {
-                            input = inputList.AsQueryable();
+                            output = outputList.AsQueryable();
                         }
                         else
                         {
-                            input = inputList;
+                            output = outputList;
                         }
                     }
                     else
                     {
-                        var response = _securityAuthorizationProvider.CheckObjectAuthorization(input, null, action);
+                        var response = _securityAuthorizationProvider.CheckObjectAuthorization(output, null, action);
                         if (!response.IsAuthorized)
                         {
                             return null;
                         }
-                        input = response.SecuredObject;
+                        output = response.SecuredObject;
                     }
                 }
             }
 
-            return input;
+            return output;
         }
 
         // TODO: Break in to Supporting Objects, User, Object, and Field Level Security Processing
         public void ProcessBefore(IParameterCollection inputs, IList<CustomAttributeNamedArgument> customAttributeNamedArguments)
         {
             var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
+            if (action == null)
+            {
+                throw new ConfigurationException("No Security Action Specified for Method!");
+            }
             if (_securityContext.EnableUserLevelSecurity)
             {
                 var response = _securityAuthorizationProvider.CheckUserAuthorization(action);
@@ -108,7 +118,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
             if (_securityContext.EnableObjectLevelSecurity)
             {
                 var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
-                if (action != null && action == "Update" && parameters != null)
+                if (action == "Update" && parameters != null)
                 {
                     var parameterList = parameters.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var parameter in parameterList)
@@ -118,20 +128,23 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                             var flaggedInput = inputs[parameter];
                             if (_securityContext.EnableFieldLevelSecurity)
                             {
+                                // NOTE: This implementation Makes a Hard Assumption on Mongo
+                                // TODO: Decouple from Mongo
                                 var flaggedEntity = flaggedInput as IEntity<string>;
                                 if (flaggedEntity != null)
                                 {
                                     var originalInput = _genericRepository.GetById(flaggedInput.GetType(), flaggedEntity.Id);
                                     var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput, originalInput, action);
+                                    if (!response.IsAuthorized)
+                                    {
+                                        throw new SecurityException(response.AuthorizationMessage);
+                                    }
                                     var flaggedInputPropertyInfoList = flaggedInput.GetType().GetProperties();
                                     var responsePropertyInfoList = response.SecuredObject.GetType().GetProperties();
                                     for (var i = 0; i < flaggedInputPropertyInfoList.Length; i++)
                                     {
                                         flaggedInputPropertyInfoList[i].SetValue(flaggedInput, responsePropertyInfoList[i].GetValue(response.SecuredObject));
-                                    }
-                                    if (!response.IsAuthorized)
-                                    {
-                                        throw new SecurityException(response.AuthorizationMessage);
+                                        // TODO: Make a Deep Set
                                     }
                                 }
                                 else
@@ -141,13 +154,16 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                             }
                             else
                             {
-                                var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput,
-                                    null, action);
+                                var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput, null, action);
                                 if (!response.IsAuthorized)
                                 {
                                     throw new SecurityException(response.AuthorizationMessage);
                                 }
                             }
+                        }
+                        else
+                        {
+                            throw new ConfigurationException(string.Format("Incorrect Parameter Specified {0}, Parameter Does Not Exist!", parameter));
                         }
                     }
                 }

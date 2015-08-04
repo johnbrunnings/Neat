@@ -8,7 +8,8 @@ namespace Neat.Infrastructure.ApplicationProcessing
     public interface IApplicationProcessingRule
     {
         Type AttributeType { get; }
-        object ProcessAfter(object input, IList<CustomAttributeNamedArgument> customAttributeNamedArguments);
+        // TODO: Decouple from Unity
+        object ProcessAfter(object output, IList<CustomAttributeNamedArgument> customAttributeNamedArguments);
         void ProcessBefore(IParameterCollection inputs, IList<CustomAttributeNamedArgument> customAttributeNamedArguments);
     }
 }

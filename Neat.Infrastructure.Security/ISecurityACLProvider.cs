@@ -2,7 +2,7 @@
 {
     public interface ISecurityACLProvider
     {
-        string GetRoleForObject(object securedObject);
+        string GetCurrentUserRoleForObject(object securedObject);
         string GetCurrentUserRole();
     }
 }

@@ -2,7 +2,7 @@
 {
     public class SecurityACLProvider : ISecurityACLProvider
     {
-        public string GetRoleForObject(object securedObject)
+        public string GetCurrentUserRoleForObject(object securedObject)
         {
             return "Admin";
         }

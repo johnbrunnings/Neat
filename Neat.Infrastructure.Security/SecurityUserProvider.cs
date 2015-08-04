@@ -27,6 +27,7 @@ namespace Neat.Infrastructure.Security
         public string CreateUser(User user)
         {
             user.Password = _encryptionProvider.Encrypt(user.Password);
+            user.Username = user.Username.ToLower();
             var newUser = _securityStorageProvider.Add(user);
             if (!_securityContext.EnableLoginUserOnCreation)
             {

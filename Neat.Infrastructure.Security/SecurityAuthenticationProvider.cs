@@ -26,10 +26,11 @@ namespace Neat.Infrastructure.Security
         public string Authenticate(UserAuthenticationRequest userAuthenticationRequest)
         {
             var encryptedPassword = _hashProvider.Hash(userAuthenticationRequest.Password);
+            userAuthenticationRequest.Username = userAuthenticationRequest.Username.ToLower();
             var user = _userStorageApplication.GetAll()
                 .Where(
                     u =>
-                        u.Username.ToLower() == userAuthenticationRequest.Username &&
+                        u.Username == userAuthenticationRequest.Username &&
                         u.Password == encryptedPassword)
                 .FirstOrDefault();
 

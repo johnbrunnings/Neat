@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Neat.Infrastructure.Security.Attribute;
 using Neat.Infrastructure.Security.Context;
 using Neat.Infrastructure.Security.Model.Response;
@@ -26,16 +26,16 @@ namespace Neat.Infrastructure.Security
         {
             var user = _securityAccessTokenProvider.GetUserFromAccessToken(accessToken);
             var authorizationResponse = new AuthorizationResponse();
+            authorizationResponse.IsAuthorized = user != null;
 
             if (user != null)
             {
                 authorizationResponse.UserId = user.Id;
-                authorizationResponse.IsAuthorized = true;
             }
             
             if (!authorizationResponse.IsAuthorized)
             {
-                authorizationResponse.AuthorizationMessage = string.Format("Session Has Expired!");
+                authorizationResponse.AuthorizationMessage = string.Format("Session Has Expired Or User is Not Logged In!");
             }
 
             return authorizationResponse;
@@ -59,7 +59,7 @@ namespace Neat.Infrastructure.Security
         public AuthorizationResponse CheckObjectAuthorization(object securedObject, object originalObject, string action)
         {
             var authorizationResponse = new AuthorizationResponse();
-            var role = _securityACLProvider.GetRoleForObject(securedObject);
+            var role = _securityACLProvider.GetCurrentUserRoleForObject(securedObject);
             var actions = _securityPermissionProvider.GetActionsForRole(role);
                 
             authorizationResponse.IsAuthorized = actions.Contains(action);
@@ -70,19 +70,21 @@ namespace Neat.Infrastructure.Security
 
             if (_securityContext.EnableFieldLevelSecurity)
             {
-                var securelyProcessedObject = ProcessObjectFieldSecurity(securedObject, originalObject);
-                authorizationResponse.SecuredObject = securelyProcessedObject;
+                var fieldLevelAuthorizationResponse = ProcessObjectFieldSecurity(securedObject, originalObject);
+                authorizationResponse.SecuredObject = fieldLevelAuthorizationResponse.SecuredObject;
+                authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, fieldLevelAuthorizationResponse.AuthorizationMessage);
             }
 
             return authorizationResponse;
         }
 
-        private object ProcessObjectFieldSecurity(object securedObject, object originalObject, int depth = 0)
+        private AuthorizationResponse ProcessObjectFieldSecurity(object securedObject, object originalObject, int depth = 0)
         {
+            var authorizationResponse = new AuthorizationResponse();
             var authorizationFailureMessages = new List<string>();
             if (securedObject == null)
             {
-                return authorizationFailureMessages;
+                return authorizationResponse;
             }
             var securedType = securedObject.GetType();
             var securedProperties = securedType.GetProperties();
@@ -105,7 +107,7 @@ namespace Neat.Infrastructure.Security
                         {
                             securedPropertyName = string.Format("{0}.{1}", securedPropertyInfo.PropertyType.FullName, securedPropertyInfo.Name);
                         }
-                        var role = _securityACLProvider.GetRoleForObject(securedObject);
+                        var role = _securityACLProvider.GetCurrentUserRoleForObject(securedObject);
                         var propertyType = securedPropertyInfo.PropertyType;
                         if (securedValue != originalValue && !_securityPermissionProvider.CanWriteToProperty(role, securedPropertyName))
                         {
@@ -135,7 +137,7 @@ namespace Neat.Infrastructure.Security
                         {
                             securedPropertyName = string.Format("{0}.{1}", securedPropertyInfo.PropertyType.FullName, securedPropertyInfo.Name);
                         }
-                        var role = _securityACLProvider.GetRoleForObject(securedObject);
+                        var role = _securityACLProvider.GetCurrentUserRoleForObject(securedObject);
                         var propertyType = securedPropertyInfo.PropertyType;
                         if (!_securityPermissionProvider.CanReadFromProperty(role, securedPropertyName))
                         {
@@ -150,7 +152,16 @@ namespace Neat.Infrastructure.Security
                 }
             }
 
-            return securedObject;
+            authorizationResponse.SecuredObject = securedObject;
+            var authorizationMessageStringBuilder = new StringBuilder();
+            foreach (var authorizationFailureMessage in authorizationFailureMessages)
+            {
+                authorizationMessageStringBuilder.Append(authorizationFailureMessage);
+                authorizationMessageStringBuilder.Append(" ");
+            }
+            authorizationResponse.AuthorizationMessage = authorizationMessageStringBuilder.ToString();
+
+            return authorizationResponse;
         }
 
         public string GetAccessTokenForLoggedInUser(string userId)
