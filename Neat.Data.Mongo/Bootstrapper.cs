@@ -22,6 +22,7 @@ namespace Neat.Data.Mongo
         {
             container.RegisterType(typeof(IRepository<>), typeof(MongoRepository<>),
                 new ContainerControlledLifetimeManager());
+            container.RegisterType<IGenericRepository, GenericMongoRepository>(new ContainerControlledLifetimeManager());
         }
     }
 }

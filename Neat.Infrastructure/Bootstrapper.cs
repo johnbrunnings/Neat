@@ -25,7 +25,7 @@ namespace Neat.Infrastructure
         private static void Register(IUnityContainer container)
         {
             container.RegisterType<IConfig, MsXmlConfig>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IApplicationProcessor, ApplicationProcessor>(new ContainerControlledLifetimeManager());
+            container.RegisterStrategyExecutor<IApplicationProcessor, ApplicationProcessor, IApplicationProcessingRule>();
             container.RegisterType<IEncryptionProvider, AesEncryptionProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IHashProvider, Sha512HashProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEncryptionContext, EncryptionContext>(new ContainerControlledLifetimeManager());

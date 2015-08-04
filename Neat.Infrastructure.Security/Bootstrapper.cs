@@ -1,4 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
+using Neat.Infrastructure.ApplicationProcessing;
+using Neat.Infrastructure.Security.ApplicationProcessing;
 using Neat.Infrastructure.Security.Context;
 using Neat.Infrastructure.Security.Storage;
 
@@ -26,11 +28,13 @@ namespace Neat.Infrastructure.Security
             container.RegisterType(typeof(IStorageApplication<>), typeof(MongoStorageApplication<>),
                 new ContainerControlledLifetimeManager());
 
+            container.RegisterType<ISecurityStorageProvider, SecurityStorageProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAccessTokenProvider, SecurityAccessTokenProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAuthorizationProvider, SecurityAuthorizationProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAuthenticationProvider, SecurityAuthenticationProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityUserProvider, SecurityUserProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityContext, SecurityContext>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IApplicationProcessingRule, SecurityApplicationProcessingRule>("SecurityApplicationProcessingRule", new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
+using Neat.Infrastructure.Security;
 using Neat.Infrastructure.Unity;
+using Neat.Infrastructure.Unity.Interceptor;
 
 namespace Neat.Application
 {
@@ -21,11 +23,15 @@ namespace Neat.Application
         {
             Neat.Data.Mongo.Bootstrapper.Attach(container);
             Neat.Infrastructure.Bootstrapper.Attach(container);
+            Neat.Infrastructure.Session.Bootstrapper.Attach(container);
+            Neat.Infrastructure.Security.Bootstrapper.Attach(container);
 
-            container.RegisterType(typeof (IDomainApplication<>), typeof (DomainApplication<>),
-                new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecurityACLProvider, SecurityACLProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecurityPermissionProvider, SecurityPermissionProvider>(new ContainerControlledLifetimeManager());
 
-            container.RegisterAllService<IApplication>();
+            container.RegisterApplicationWithInterceptor(typeof(IDomainApplication<>), typeof(DomainApplication<>), new[] { typeof(ApplicationProcessingInterceptor) });
+
+            container.RegisterAllServiceWithInterceptors<IApplication>(new[] { typeof(ApplicationProcessingInterceptor) });
         }
     }
 }

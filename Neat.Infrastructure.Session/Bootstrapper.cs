@@ -27,6 +27,7 @@ namespace Neat.Infrastructure.Session
                 new ContainerControlledLifetimeManager());
 
             container.RegisterType<ISessionStorageProvider, SessionStorageProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISessionGraceStorageProvider, SessionGraceStorageProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISessionProvider, SessionProvider>("SessionProvider", new ContainerControlledLifetimeManager());
             container.RegisterType<ISessionProvider, SessionRecyclingSessionProviderDecorator>(
                 new ContainerControlledLifetimeManager(),

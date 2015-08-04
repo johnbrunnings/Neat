@@ -79,12 +79,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationProcessing\SecurityApplicationProcessingRule.cs" />
+    <Compile Include="Attribute\SecureReadPropertyAttribute.cs" />
+    <Compile Include="Attribute\SecureWritePropertyAttribute.cs" />
+    <Compile Include="Attribute\SecuredActionAttribute.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Context\ISecurityContext.cs" />
     <Compile Include="Context\SecurityContext.cs" />
     <Compile Include="ISecurityAccessTokenProvider.cs" />
+    <Compile Include="ISecurityACLProvider.cs" />
     <Compile Include="ISecurityAuthenticationProvider.cs" />
     <Compile Include="ISecurityAuthorizationProvider.cs" />
+    <Compile Include="ISecurityPermissionProvider.cs" />
     <Compile Include="ISecurityUserProvider.cs" />
     <Compile Include="Model\Request\UserAuthenticationRequest.cs" />
     <Compile Include="Model\Request\UserAuthorizationDurationRequest.cs" />
@@ -92,8 +98,10 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityAccessTokenProvider.cs" />
+    <Compile Include="SecurityACLProvider.cs" />
     <Compile Include="SecurityAuthenticationProvider.cs" />
     <Compile Include="SecurityAuthorizationProvider.cs" />
+    <Compile Include="SecurityPermissionProvider.cs" />
     <Compile Include="SecurityUserProvider.cs" />
     <Compile Include="Storage\ISecurityStorageProvider.cs" />
     <Compile Include="Storage\MongoStorageApplication.cs" />

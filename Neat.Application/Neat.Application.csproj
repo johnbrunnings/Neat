@@ -86,6 +86,14 @@
       <Project>{08da984e-a9a5-46ee-a57f-6346971be312}</Project>
       <Name>Neat.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Neat.Infrastructure.Security\Neat.Infrastructure.Security.csproj">
+      <Project>{18832fca-045d-47d5-b8e1-a490d3afab83}</Project>
+      <Name>Neat.Infrastructure.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Neat.Infrastructure.Session\Neat.Infrastructure.Session.csproj">
+      <Project>{d0f00123-b11a-4018-b5d3-ae74b2aa6b16}</Project>
+      <Name>Neat.Infrastructure.Session</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Neat.Infrastructure\Neat.Infrastructure.csproj">
       <Project>{858463d3-8e17-46ab-8ea3-5ee858fecc84}</Project>
       <Name>Neat.Infrastructure</Name>
