@@ -6,5 +6,8 @@ namespace Neat.Infrastructure.Security.Context
     {
         bool EnableLoginUserOnCreation { get; }
         TimeSpan LoginUserOnCreationDuration { get; }
+        bool EnableUserLevelSecurity { get; }
+        bool EnableObjectLevelSecurity { get; }
+        bool EnableFieldLevelSecurity { get; }
     }
 }

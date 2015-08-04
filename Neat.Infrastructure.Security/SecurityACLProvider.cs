@@ -6,5 +6,10 @@
         {
             return "Admin";
         }
+
+        public string GetCurrentUserRole()
+        {
+            return "Admin";
+        }
     }
 }

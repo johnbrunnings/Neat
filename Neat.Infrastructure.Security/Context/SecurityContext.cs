@@ -30,5 +30,11 @@ namespace Neat.Infrastructure.Security.Context
                 return new TimeSpan(days, hours, minutes, seconds);
             }
         }
+
+        public bool EnableUserLevelSecurity { get { return Convert.ToBoolean(_config.GetSetting("Security:EnableUserLevelSecurity")); } }
+
+        public bool EnableObjectLevelSecurity { get { return Convert.ToBoolean(_config.GetSetting("Security:EnableObjectLevelSecurity")); } }
+
+        public bool EnableFieldLevelSecurity { get { return Convert.ToBoolean(_config.GetSetting("Security:EnableFieldLevelSecurity")); } }
     }
 }

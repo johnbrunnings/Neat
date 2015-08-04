@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity.InterceptionExtension;
 using MongoRepository;
 using Neat.Data;
 using Neat.Infrastructure.ApplicationProcessing;
 using Neat.Infrastructure.Security.Attribute;
+using Neat.Infrastructure.Security.Context;
 
 namespace Neat.Infrastructure.Security.ApplicationProcessing
 {
@@ -17,11 +17,13 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
     {
         private readonly ISecurityAuthorizationProvider _securityAuthorizationProvider;
         private readonly IGenericRepository _genericRepository;
+        private readonly ISecurityContext _securityContext;
 
-        public SecurityApplicationProcessingRule(ISecurityAuthorizationProvider securityAuthorizationProvider, IGenericRepository genericRepository)
+        public SecurityApplicationProcessingRule(ISecurityAuthorizationProvider securityAuthorizationProvider, IGenericRepository genericRepository, ISecurityContext securityContext)
         {
             _securityAuthorizationProvider = securityAuthorizationProvider;
             _genericRepository = genericRepository;
+            _securityContext = securityContext;
         }
 
         public Type AttributeType
@@ -31,94 +33,121 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
 
         public object ProcessAfter(object input, IList<CustomAttributeNamedArgument> customAttributeNamedArguments)
         {
-            var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
-            var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
-            if (action != null && action == "Read" && parameters == null)
+            if (_securityContext.EnableFieldLevelSecurity)
             {
-                var isQueryable = false;
-                var inputQuerable = input as IQueryable;
-                var inputEnumerable = input as IEnumerable;
-                if (inputQuerable != null)
+                var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
+                var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
+                if (action != null && action == "Read" && parameters == null)
                 {
-                    isQueryable = true;
-                }
-                if (inputEnumerable != null)
-                {
-                    var counter = 0;
-                    var inputType = input.GetType();
-                    var inputGenericArgs = new Type[0];
-                    var buildType = typeof (List<>);
-                    if (inputType.IsGenericType)
+                    var isQueryable = false;
+                    var inputQuerable = input as IQueryable;
+                    var inputEnumerable = input as IEnumerable;
+                    if (inputQuerable != null)
                     {
-                        inputGenericArgs = inputType.GetGenericArguments();
-                        buildType = buildType.MakeGenericType(inputGenericArgs);
+                        isQueryable = true;
                     }
-                    input = Activator.CreateInstance(buildType);
-                    var inputList = input as IList;
-                    foreach (var inputItem in inputEnumerable)
+                    if (inputEnumerable != null)
                     {
-                        var response = _securityAuthorizationProvider.CheckAuthorization(inputItem, null, action);
-                        if (response.IsAuthorized)
+                        var counter = 0;
+                        var inputType = input.GetType();
+                        var inputGenericArgs = new Type[0];
+                        var buildType = typeof (List<>);
+                        if (inputType.IsGenericType)
                         {
-                            inputList.Add(response.SecuredObject);
+                            inputGenericArgs = inputType.GetGenericArguments();
+                            buildType = buildType.MakeGenericType(inputGenericArgs);
                         }
-                        
-                        counter++;
-                    }
-                    if (isQueryable)
-                    {
-                        input = inputList.AsQueryable();
+                        input = Activator.CreateInstance(buildType);
+                        var inputList = input as IList;
+                        foreach (var inputItem in inputEnumerable)
+                        {
+                            var response = _securityAuthorizationProvider.CheckObjectAuthorization(inputItem, null, action);
+                            if (response.IsAuthorized)
+                            {
+                                inputList.Add(response.SecuredObject);
+                            }
+
+                            counter++;
+                        }
+                        if (isQueryable)
+                        {
+                            input = inputList.AsQueryable();
+                        }
+                        else
+                        {
+                            input = inputList;
+                        }
                     }
                     else
                     {
-                        input = inputList;
+                        var response = _securityAuthorizationProvider.CheckObjectAuthorization(input, null, action);
+                        if (!response.IsAuthorized)
+                        {
+                            return null;
+                        }
+                        input = response.SecuredObject;
                     }
-                }
-                else
-                {
-                    var response = _securityAuthorizationProvider.CheckAuthorization(input, null, action);
-                    if (!response.IsAuthorized)
-                    {
-                        return null;
-                    }
-                    input = response.SecuredObject;
                 }
             }
 
             return input;
         }
 
+        // TODO: Break in to Supporting Objects, User, Object, and Field Level Security Processing
         public void ProcessBefore(IParameterCollection inputs, IList<CustomAttributeNamedArgument> customAttributeNamedArguments)
         {
             var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
-            var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
-            if (action != null && action == "Update" && parameters != null)
+            if (_securityContext.EnableUserLevelSecurity)
             {
-                var parameterList = parameters.Split(new [] {","}, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var parameter in parameterList)
+                var response = _securityAuthorizationProvider.CheckUserAuthorization(action);
+                if (!response.IsAuthorized)
                 {
-                    if (!String.IsNullOrWhiteSpace(parameter) && inputs.ContainsParameter(parameter))
+                    throw new SecurityException(response.AuthorizationMessage);
+                }
+            }
+            if (_securityContext.EnableObjectLevelSecurity)
+            {
+                var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
+                if (action != null && action == "Update" && parameters != null)
+                {
+                    var parameterList = parameters.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var parameter in parameterList)
                     {
-                        var flaggedInput = inputs[parameter];
-                        var flaggedEntity = flaggedInput as IEntity<string>;
-                        if (flaggedEntity != null)
+                        if (!String.IsNullOrWhiteSpace(parameter) && inputs.ContainsParameter(parameter))
                         {
-                            var originalInput = _genericRepository.GetById(flaggedInput.GetType(), flaggedEntity.Id);
-                            var response = _securityAuthorizationProvider.CheckAuthorization(flaggedInput, originalInput, action);
-                            var flaggedInputPropertyInfoList = flaggedInput.GetType().GetProperties();
-                            var responsePropertyInfoList = response.SecuredObject.GetType().GetProperties();
-                            for (var i = 0; i < flaggedInputPropertyInfoList.Length; i++)
+                            var flaggedInput = inputs[parameter];
+                            if (_securityContext.EnableFieldLevelSecurity)
                             {
-                                flaggedInputPropertyInfoList[i].SetValue(flaggedInput, responsePropertyInfoList[i].GetValue(response.SecuredObject));
+                                var flaggedEntity = flaggedInput as IEntity<string>;
+                                if (flaggedEntity != null)
+                                {
+                                    var originalInput = _genericRepository.GetById(flaggedInput.GetType(), flaggedEntity.Id);
+                                    var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput, originalInput, action);
+                                    var flaggedInputPropertyInfoList = flaggedInput.GetType().GetProperties();
+                                    var responsePropertyInfoList = response.SecuredObject.GetType().GetProperties();
+                                    for (var i = 0; i < flaggedInputPropertyInfoList.Length; i++)
+                                    {
+                                        flaggedInputPropertyInfoList[i].SetValue(flaggedInput, responsePropertyInfoList[i].GetValue(response.SecuredObject));
+                                    }
+                                    if (!response.IsAuthorized)
+                                    {
+                                        throw new SecurityException(response.AuthorizationMessage);
+                                    }
+                                }
+                                else
+                                {
+                                    throw new SecurityException("Cannot Determine Access!");
+                                }
                             }
-                            if (!response.IsAuthorized)
+                            else
                             {
-                                throw new SecurityException(response.AuthorizationMessage);
+                                var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput,
+                                    null, action);
+                                if (!response.IsAuthorized)
+                                {
+                                    throw new SecurityException(response.AuthorizationMessage);
+                                }
                             }
-                        }
-                        else
-                        {
-                            throw new SecurityException("Cannot Determine Access!");
                         }
                     }
                 }
