@@ -40,6 +40,16 @@ namespace Neat.Infrastructure.WebApi
                 new { action = "Delete" },
                 new { httpMethod = new HttpMethodConstraint(System.Net.Http.HttpMethod.Delete) });
             config.Routes.MapHttpRoute(
+                "DefaultApiOptions",
+                "{controller}",
+                new {   httpMethod = new HttpMethodConstraint(
+                        System.Net.Http.HttpMethod.Options,
+                        System.Net.Http.HttpMethod.Delete,
+                        System.Net.Http.HttpMethod.Get,
+                        System.Net.Http.HttpMethod.Post,
+                        System.Net.Http.HttpMethod.Put
+                        )});
+            config.Routes.MapHttpRoute(
                 "DefaultApiPatch",
                 "{controller}",
                 new { action = "Patch" },

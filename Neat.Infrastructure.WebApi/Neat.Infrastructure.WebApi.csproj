@@ -135,6 +135,7 @@
     <Compile Include="Controllers\BaseReadOnlyController.cs" />
     <Compile Include="Controllers\BaseReadWriteController.cs" />
     <Compile Include="Controllers\BaseReadWriteDeleteController.cs" />
+    <Compile Include="Filter\UnityWebApiFilterProvider.cs" />
     <Compile Include="HttpMethod\PatchHttpMethodConstraint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
