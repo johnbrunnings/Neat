@@ -117,23 +117,41 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
             }
             if (_securityContext.EnableObjectLevelSecurity)
             {
-                var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
-                if (action == "Update" && parameters != null)
+                if (action != "Read")
                 {
+                    var parameters =
+                        customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value
+                            as string;
+                    if (parameters == null)
+                    {
+                        parameters = string.Empty;
+                    }
                     var parameterList = parameters.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var parameter in parameterList)
                     {
                         if (!String.IsNullOrWhiteSpace(parameter) && inputs.ContainsParameter(parameter))
                         {
                             var flaggedInput = inputs[parameter];
-                            if (_securityContext.EnableFieldLevelSecurity)
+                            if (action == "Update" || action == "Create")
                             {
-                                // NOTE: This implementation Makes a Hard Assumption on Mongo
-                                // TODO: Decouple from Mongo
-                                var flaggedEntity = flaggedInput as IEntity<string>;
-                                if (flaggedEntity != null)
+                                if (_securityContext.EnableFieldLevelSecurity)
                                 {
-                                    var originalInput = _genericRepository.GetById(flaggedInput.GetType(), flaggedEntity.Id);
+                                    // NOTE: This implementation Makes a Hard Assumption on Mongo
+                                    // TODO: Decouple from Mongo
+                                    var flaggedInputType = flaggedInput.GetType();
+                                    var originalInput = Activator.CreateInstance(flaggedInputType);
+                                    if (action == "Update")
+                                    {
+                                        var flaggedEntity = flaggedInput as IEntity<string>;
+                                        if (flaggedEntity != null)
+                                        {
+                                            originalInput = _genericRepository.GetById(flaggedInput.GetType(), flaggedEntity.Id);
+                                        }
+                                        else
+                                        {
+                                            throw new SecurityException("Cannot Determine Access!");
+                                        }
+                                    }
                                     var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput, originalInput, action);
                                     if (!response.IsAuthorized)
                                     {
@@ -149,10 +167,14 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                                 }
                                 else
                                 {
-                                    throw new SecurityException("Cannot Determine Access!");
+                                    var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput, null, action);
+                                    if (!response.IsAuthorized)
+                                    {
+                                        throw new SecurityException(response.AuthorizationMessage);
+                                    }
                                 }
                             }
-                            else
+                            if (action == "Delete")
                             {
                                 var response = _securityAuthorizationProvider.CheckObjectAuthorization(flaggedInput, null, action);
                                 if (!response.IsAuthorized)

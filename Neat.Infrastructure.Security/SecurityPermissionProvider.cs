@@ -17,7 +17,7 @@ namespace Neat.Infrastructure.Security
 
         public bool CanWriteToProperty(string role, string propertyName)
         {
-            return true;
+            return false;
         }
 
         public bool CanReadFromProperty(string role, string propertyName)
