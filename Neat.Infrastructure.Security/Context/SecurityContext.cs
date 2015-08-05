@@ -36,5 +36,7 @@ namespace Neat.Infrastructure.Security.Context
         public bool EnableObjectLevelSecurity { get { return Convert.ToBoolean(_config.GetSetting("Security:EnableObjectLevelSecurity")); } }
 
         public bool EnableFieldLevelSecurity { get { return Convert.ToBoolean(_config.GetSetting("Security:EnableFieldLevelSecurity")); } }
+
+        public int FieldLevelSecurityEvaulationDepth { get { return Convert.ToInt32(_config.GetSetting("Security:FieldLevelSecurityEvaulationDepth")); } }
     }
 }

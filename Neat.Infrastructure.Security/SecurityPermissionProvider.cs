@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Neat.Infrastructure.Security
 {
@@ -15,14 +16,13 @@ namespace Neat.Infrastructure.Security
             return actions;
         }
 
-        public bool CanWriteToProperty(string role, string propertyName)
+        public bool CanPerformActionOnProperty(string role, string action, string propertyName)
         {
-            return false;
-        }
+            var actions = GetActionsForRole(role);
 
-        public bool CanReadFromProperty(string role, string propertyName)
-        {
-            return true;
+            if (action == "Update") return true;
+
+            return actions.Contains(action);
         }
     }
 }

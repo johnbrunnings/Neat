@@ -69,7 +69,8 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                         // TODO: Do a bit more work on making this List for other scenarios
                         foreach (var outputItem in outputEnumerable)
                         {
-                            var response = _securityAuthorizationProvider.CheckObjectAuthorization(outputItem, null, action);
+                            var originalInput = Activator.CreateInstance(outputItem.GetType());
+                            var response = _securityAuthorizationProvider.CheckObjectAuthorization(outputItem, originalInput, action);
                             if (response.IsAuthorized)
                             {
                                 outputList.Add(response.SecuredObject);
@@ -86,7 +87,9 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                     }
                     else
                     {
-                        var response = _securityAuthorizationProvider.CheckObjectAuthorization(output, null, action);
+                        var outputType = output.GetType();
+                        var originalInput = Activator.CreateInstance(outputType);
+                        var response = _securityAuthorizationProvider.CheckObjectAuthorization(output, originalInput, action);
                         if (!response.IsAuthorized)
                         {
                             return null;
@@ -119,9 +122,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
             {
                 if (action != "Read")
                 {
-                    var parameters =
-                        customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value
-                            as string;
+                    var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
                     if (parameters == null)
                     {
                         parameters = string.Empty;
@@ -132,7 +133,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                         if (!String.IsNullOrWhiteSpace(parameter) && inputs.ContainsParameter(parameter))
                         {
                             var flaggedInput = inputs[parameter];
-                            if (action == "Update" || action == "Create")
+                            if (flaggedInput != null && (action == "Update" || action == "Create"))
                             {
                                 if (_securityContext.EnableFieldLevelSecurity)
                                 {
@@ -162,7 +163,6 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                                     for (var i = 0; i < flaggedInputPropertyInfoList.Length; i++)
                                     {
                                         flaggedInputPropertyInfoList[i].SetValue(flaggedInput, responsePropertyInfoList[i].GetValue(response.SecuredObject));
-                                        // TODO: Make a Deep Set
                                     }
                                 }
                                 else

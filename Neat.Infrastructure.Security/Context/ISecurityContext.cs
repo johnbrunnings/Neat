@@ -9,5 +9,6 @@ namespace Neat.Infrastructure.Security.Context
         bool EnableUserLevelSecurity { get; }
         bool EnableObjectLevelSecurity { get; }
         bool EnableFieldLevelSecurity { get; }
+        int FieldLevelSecurityEvaulationDepth { get; }
     }
 }
