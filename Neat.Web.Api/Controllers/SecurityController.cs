@@ -26,9 +26,13 @@ namespace Neat.Web.Api.Controllers
         }
 
         [HttpPost]
-        public bool VerifyAccessToken([FromBody] UserAuthenticationAccessTokenRequest userAuthenticationAccessTokenRequest)
+        public string VerifyAccessToken([FromBody] UserAuthenticationAccessTokenRequest userAuthenticationAccessTokenRequest)
         {
-            return _securityAuthorizationProvider.GetAuthorizationForAccessToken(userAuthenticationAccessTokenRequest.AccessToken).IsAuthorized;
+            if (_securityAuthorizationProvider.GetAuthorizationForAccessToken(userAuthenticationAccessTokenRequest.AccessToken).IsAuthorized)
+            {
+                return _securityAuthorizationProvider.GetAccessTokenForLoggedInUser(_securityUserProvider.GetCurrentUser().Id);
+            }
+            return null;
         }
 
         [HttpPost]
