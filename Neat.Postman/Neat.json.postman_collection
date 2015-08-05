@@ -22,6 +22,23 @@
 			"collection_name": "Neat",
 			"collection_owner": 0,
 			"collection_id": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161"
+		},
+		{
+			"id": "7437fa9f-4a4a-6cbf-0882-51c78fd93bbd",
+			"name": "Security",
+			"description": "",
+			"write": true,
+			"order": [
+				"436cbed6-9680-df80-3267-0fbf0bf0c575",
+				"f6c10166-c1b7-4704-d103-b4d39e2aa3cb",
+				"2fde494e-e0af-795c-8b58-11337c40e83b",
+				"0f99a472-d946-ad51-da94-9346a83633b8"
+			],
+			"collection": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
+			"owner": 0,
+			"collection_name": "Neat",
+			"collection_owner": 0,
+			"collection_id": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161"
 		}
 	],
 	"timestamp": 1437897823087,
@@ -29,6 +46,26 @@
 	"remoteLink": "",
 	"public": false,
 	"requests": [
+		{
+			"id": "0f99a472-d946-ad51-da94-9346a83633b8",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{protocol}}://{{subdomain}}.neat.com/security/verifyaccesstoken",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1438736619732,
+			"name": "VerifyAccessToken",
+			"description": "",
+			"collectionId": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
+			"responses": [],
+			"rawModeData": "{\n  \"accesstoken\" : \"d0UBVt3TCqLhCLuDX3fizq9BdZzhwHeormyL08ziRGnjAbiywHXWmZaXet4MJwhbl7jTVWMyIz6zgp4JN7KHMpSqsHPHJwK+vjWpNEA+wyJIPBkfJsbvTC1Zw8+UHEt6BjOCTVKXfJNLQGC4SwXKhKKyfk8D/VD3mclr0hGtGbHBgF7Fo65m+dlZWZWO4AHCitHbXvLC5eChWLjCcPJrUUnqAiUEbW6jSWB9e5aEG+sCJ944INy1nhp5eKqqbGeP\"\n}"
+		},
 		{
 			"id": "23c016ba-a9c2-039c-63bc-43c65e84c75d",
 			"headers": "Content-Type: application/json\n",
@@ -49,6 +86,46 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"folder": "fa4dcfbe-7c80-b827-ed02-9585de5a4fce"
+		},
+		{
+			"id": "2fde494e-e0af-795c-8b58-11337c40e83b",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{protocol}}://{{subdomain}}.neat.com/security/logout",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1438736631678,
+			"name": "Logout",
+			"description": "",
+			"collectionId": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
+			"responses": [],
+			"rawModeData": "{\n  \"accesstoken\" : \"d0UBVt3TCqLhCLuDX3fizq9BdZzhwHeormyL08ziRGnjAbiywHXWmZaXet4MJwhbl7jTVWMyIz6zgp4JN7KHMpSqsHPHJwK+vjWpNEA+wyJIPBkfJsbvTC1Zw8+UHEt6BjOCTVKXfJNLQGC4SwXKhKKyfk8D/VD3mclr0hGtGbHBgF7Fo65m+dlZWZWO4AHCitHbXvLC5eChWLjCcPJrUUnqAiUEbW6jSWB9e5aEG+sCJ944INy1nhp5eKqqbGeP\"\n}"
+		},
+		{
+			"id": "436cbed6-9680-df80-3267-0fbf0bf0c575",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{protocol}}://{{subdomain}}.neat.com/security/createuser",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1438736503749,
+			"name": "CreateUser",
+			"description": "",
+			"collectionId": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
+			"responses": [],
+			"rawModeData": "{\n  \"username\" : \"AdMiN\",\n  \"password\" : \"@dM!n\",\n  \"email\" : \"admin@neat.com\"\n}"
 		},
 		{
 			"id": "5a976fd1-4aba-16af-adc1-752b4a4774be",
@@ -105,12 +182,12 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1437897960776,
+			"time": 1438729594140,
 			"name": "CreateNeatExample",
 			"description": "",
 			"collectionId": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
 			"responses": [],
-			"rawModeData": "{\n  \"name\": \"Example\"\n}"
+			"rawModeData": "{\n  \"name\" : \"Example\",\n  \"address\" : {\n     \"address1\" : \"1 Main St\"\n  }\n}"
 		},
 		{
 			"id": "cb152574-07b7-64f0-013f-ded78ab96ecc",
@@ -125,12 +202,32 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1437898402355,
+			"time": 1438734112756,
 			"name": "UpdateNeatExample",
 			"description": "",
 			"collectionId": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
 			"responses": [],
-			"rawModeData": "{\n  \"name\": \"Example1\",\n  \"id\": \"bf1a5eba-4136-4ea6-9cbf-b21ce77b96af\"\n}"
+			"rawModeData": "{\n  \"name\": \"Example1\",\n  \"address\" : {\n     \"address1\" : \"1 Main St\",\n     \"id\" : \"db452797-eb1f-468c-a918-4209bdecced2\"\n  },\n  \"id\" : \"8edaa70f-8f1d-4238-bffd-15ce8b72c499\"\n}"
+		},
+		{
+			"id": "f6c10166-c1b7-4704-d103-b4d39e2aa3cb",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{protocol}}://{{subdomain}}.neat.com/security/authenticate",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1438736565575,
+			"name": "Authenticate",
+			"description": "",
+			"collectionId": "5d2eb1af-4cd4-2bfa-568f-578bb78ab161",
+			"responses": [],
+			"rawModeData": "{\n  \"username\" : \"AdMiN\",\n  \"password\" : \"@dM!n\",\n  \"duration\" : {\n      \"days\" : 0,\n      \"hours\" : 1,\n      \"minutes\" : 0,\n      \"seconds\" : 0\n  }\n}"
 		},
 		{
 			"id": "fe3897cc-4798-7d13-03dc-f2f14a9d404c",

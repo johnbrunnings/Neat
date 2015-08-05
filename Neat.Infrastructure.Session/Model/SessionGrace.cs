@@ -5,6 +5,11 @@ namespace Neat.Infrastructure.Session.Model
 {
     public class SessionGrace : IEntity<string>
     {
+        public SessionGrace()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public string Id { get; set; }
         public string SessionId { get; set; }
         public DateTime GraceStartDate { get; set; }

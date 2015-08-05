@@ -11,22 +11,22 @@ namespace Neat.Infrastructure.Security
     {
         private readonly ISecurityStorageProvider _securityStorageProvider;
         private readonly ISecurityAccessTokenProvider _securityAccessTokenProvider;
-        private readonly IEncryptionProvider _encryptionProvider;
+        private readonly IHashProvider _hashProvider;
         private readonly ISecurityContext _securityContext;
         private readonly ISessionProvider _sessionProvider;
 
-        public SecurityUserProvider(ISecurityStorageProvider securityStorageProvider, ISecurityAccessTokenProvider securityAccessTokenProvider, IEncryptionProvider encryptionProvider, ISecurityContext securityContext, ISessionProvider sessionProvider)
+        public SecurityUserProvider(ISecurityStorageProvider securityStorageProvider, ISecurityAccessTokenProvider securityAccessTokenProvider, IHashProvider hashProvider, ISecurityContext securityContext, ISessionProvider sessionProvider)
         {
             _securityStorageProvider = securityStorageProvider;
             _securityAccessTokenProvider = securityAccessTokenProvider;
-            _encryptionProvider = encryptionProvider;
+            _hashProvider = hashProvider;
             _securityContext = securityContext;
             _sessionProvider = sessionProvider;
         }
 
         public string CreateUser(User user)
         {
-            user.Password = _encryptionProvider.Encrypt(user.Password);
+            user.Password = _hashProvider.Hash(user.Password);
             user.Username = user.Username.ToLower();
             var newUser = _securityStorageProvider.Add(user);
             if (!_securityContext.EnableLoginUserOnCreation)

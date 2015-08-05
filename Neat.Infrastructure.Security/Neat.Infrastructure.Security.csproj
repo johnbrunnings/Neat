@@ -92,6 +92,7 @@
     <Compile Include="ISecurityAuthorizationProvider.cs" />
     <Compile Include="ISecurityPermissionProvider.cs" />
     <Compile Include="ISecurityUserProvider.cs" />
+    <Compile Include="Model\Request\UserAuthenticationAccessTokenRequest.cs" />
     <Compile Include="Model\Request\UserAuthenticationRequest.cs" />
     <Compile Include="Model\Request\UserAuthorizationDurationRequest.cs" />
     <Compile Include="Model\Response\AuthorizationResponse.cs" />

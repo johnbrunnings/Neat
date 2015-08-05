@@ -68,7 +68,7 @@ namespace Neat.Infrastructure.Session
         public void Logout(string userId)
         {
             var now = DateTime.UtcNow;
-            var session = _sessionStorageProvider.GetAll().FirstOrDefault(s => s.UserId == userId && s.StartDate >= now && s.ExpirationDate <= now);
+            var session = _sessionStorageProvider.GetAll().FirstOrDefault(s => s.UserId == userId && s.StartDate <= now && s.ExpirationDate >= now);
 
             if (session != null)
             {

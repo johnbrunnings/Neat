@@ -1,9 +1,15 @@
-﻿using MongoRepository;
+﻿using System;
+using MongoRepository;
 
 namespace Neat.Infrastructure.Security.Model
 {
     public class User : IEntity<string>
     {
+        public User()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public string Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

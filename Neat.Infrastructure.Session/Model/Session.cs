@@ -5,6 +5,11 @@ namespace Neat.Infrastructure.Session.Model
 {
     public class Session : IEntity<string>
     {
+        public Session()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public string Id { get; set; }
         public string UserId { get; set; }
         public DateTime StartDate { get; set; }
