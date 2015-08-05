@@ -118,7 +118,7 @@ namespace Neat.Infrastructure.Security
                     var securedPropertyName = secureAttribute.NamedArguments.FirstOrDefault(x => x.MemberName == "PropertyName").TypedValue.Value as string;
                     if (securedPropertyName == null)
                     {
-                        securedPropertyName = string.Format("{0}.{1}", securedPropertyInfo.PropertyType.FullName, securedPropertyInfo.Name);
+                        securedPropertyName = string.Format("{0}.{1}", securedType.FullName, securedPropertyInfo.Name);
                     }
                     var role = _securityACLProvider.GetCurrentUserRoleForObject(securedObject);
                     
