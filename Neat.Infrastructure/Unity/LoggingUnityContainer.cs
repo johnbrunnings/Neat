@@ -88,12 +88,6 @@ namespace Neat.Infrastructure.Unity
             get { return _unityContainer.Registrations; }
         }
 
-        public IUnityContainer RegisterTypeWithoutLogging(Type @from, Type to, string name, LifetimeManager lifetimeManager,
-            params InjectionMember[] injectionMembers)
-        {
-            return _unityContainer.RegisterType(@from, to, name, lifetimeManager, injectionMembers);
-        }
-
         private static InjectionMember[] GetInjectionMembersAndLogging(InjectionMember[] injectionMembers)
         {
             foreach (var injectionMember in injectionMembers)

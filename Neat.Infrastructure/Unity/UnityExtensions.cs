@@ -124,5 +124,10 @@ namespace Neat.Infrastructure.Unity
                 container.RegisterType<TInterface, TImpl>(name, new ContainerControlledLifetimeManager(), interceptingInjectionMembers.ToArray());
             }
         }
+
+        public static IUnityContainer RegisterTypeDirectlyAgainstContainer(this IUnityContainer container, Type @from, Type to, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+        {
+            return container.RegisterType(@from, to, name, lifetimeManager, injectionMembers);
+        }
     }
 }

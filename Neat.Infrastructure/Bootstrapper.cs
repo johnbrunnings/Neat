@@ -31,7 +31,7 @@ namespace Neat.Infrastructure
             container.RegisterType<IEncryptionContext, EncryptionContext>(new ContainerControlledLifetimeManager());
 
             // Bypass normal LoggingContainer registration to prevent Stack Overflow
-            ((LoggingUnityContainer)container).RegisterTypeWithoutLogging(typeof(ILogProvider), typeof(NLogProvider), null, new ContainerControlledLifetimeManager());
+            container.RegisterTypeDirectlyAgainstContainer(typeof(ILogProvider), typeof(NLogProvider), null, new ContainerControlledLifetimeManager());
 
             var locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);
