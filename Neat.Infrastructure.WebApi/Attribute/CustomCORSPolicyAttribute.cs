@@ -28,6 +28,7 @@ namespace Neat.Infrastructure.WebApi.Attribute
                 policy.Methods.Add("OPTIONS");
                 policy.Headers.Add("accept");
                 policy.Headers.Add("content-type");
+                policy.Headers.Add("X-Auth-Token");
                 policy.Headers.Add("accept, content-type");
                 policy.ExposedHeaders.Add("DataServiceVersion");
                 policy.ExposedHeaders.Add("MaxDataServiceVersion");

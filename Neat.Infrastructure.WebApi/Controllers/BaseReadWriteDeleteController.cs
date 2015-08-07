@@ -15,26 +15,27 @@ namespace Neat.Infrastructure.WebApi.Controllers
             _domainService = domainService;
         }
 
-        // GET api/{T}
+        // GET /{T}/getall
         [EnableQuery]
-        public IQueryable<T> Get()
+        [HttpGet]
+        public IQueryable<T> GetAll()
         {
             return _domainService.GetAll();
         }
 
-        // GET api/{T}/{id}
+        // GET /{T}/{id}
         public T Get(string id)
         {
             return _domainService.GetById(id);
         }
 
-        // POST api/{T}
+        // POST /{T}
         public void Post([FromBody]T entity)
         {
             _domainService.Add(entity);
         }
 
-        // PUT api/{T}
+        // PUT /{T}
         public void Put([FromBody]T entity)
         {
             _domainService.Update(entity);
@@ -46,7 +47,7 @@ namespace Neat.Infrastructure.WebApi.Controllers
             _domainService.Delete(id);
         }
 
-        // GET api/{T}/getempty
+        // GET /{T}/{id}
         [HttpGet]
         public T GetEmpty()
         {

@@ -15,20 +15,21 @@ namespace Neat.Infrastructure.WebApi.Controllers
             _domainService = domainService;
         }
 
-        // GET api/{T}
+        // GET /{T}/getall
         [EnableQuery]
-        public IQueryable<T> Get()
+        [HttpGet]
+        public IQueryable<T> GetAll()
         {
             return _domainService.GetAll();
         }
 
-        // GET api/{T}/{id}
+        // GET /{T}/{id}
         public T Get(string id)
         {
             return _domainService.GetById(id);
         }
 
-        // GET api/{T}/getempty
+        // GET /{T}
         [HttpGet]
         public T GetEmpty()
         {
