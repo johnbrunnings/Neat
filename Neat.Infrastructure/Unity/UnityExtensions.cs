@@ -127,7 +127,9 @@ namespace Neat.Infrastructure.Unity
 
         public static IUnityContainer RegisterTypeDirectlyAgainstContainer(this IUnityContainer container, Type @from, Type to, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
         {
-            return container.RegisterType(@from, to, name, lifetimeManager, injectionMembers);
+            var additionalInjectionMembers = new InjectionMember[injectionMembers.Length + 1];
+            additionalInjectionMembers[injectionMembers.Length] = new BypassLoggingInjectionMember();
+            return container.RegisterType(@from, to, name, lifetimeManager, additionalInjectionMembers);
         }
     }
 }

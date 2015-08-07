@@ -22,12 +22,12 @@ namespace Neat.Infrastructure.Unity
             _unityContainer.Dispose();
         }
 
-        public IUnityContainer RegisterType(Type @from, Type to, string name, LifetimeManager lifetimeManager,
-            params InjectionMember[] injectionMembers)
+        public IUnityContainer RegisterType(Type @from, Type to, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
         {
-            if (@from == null)
+            var bypassLogging = injectionMembers.Any(injectionMember => injectionMember.GetType() == typeof (BypassLoggingInjectionMember));
+            if (@from == null || bypassLogging)
             {
-                // we're assuming this is just a compoenent registration in which case our logging injection, by interface, will not work.
+                // we're assuming this is just a component registration in which case our logging injection, by interface, will not work.
                 return _unityContainer.RegisterType(@from, to, name, lifetimeManager, injectionMembers);
             }
             return _unityContainer.RegisterType(@from, to, name, lifetimeManager, GetInjectionMembersAndLogging(injectionMembers));
