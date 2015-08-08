@@ -91,23 +91,30 @@
     <Compile Include="ISecurityAuthenticationProvider.cs" />
     <Compile Include="ISecurityAuthorizationProvider.cs" />
     <Compile Include="ISecurityPermissionProvider.cs" />
+    <Compile Include="ISecurityUserRoleProvider.cs" />
     <Compile Include="ISecurityUserProvider.cs" />
     <Compile Include="Model\Request\UserAuthenticationAccessTokenRequest.cs" />
     <Compile Include="Model\Request\UserAuthenticationRequest.cs" />
     <Compile Include="Model\Request\UserAuthorizationDurationRequest.cs" />
+    <Compile Include="Model\Request\UserRoleForObjectRequest.cs" />
+    <Compile Include="Model\Request\UserRoleRequest.cs" />
     <Compile Include="Model\Response\AuthorizationResponse.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityAccessTokenProvider.cs" />
     <Compile Include="SecurityACLProvider.cs" />
     <Compile Include="SecurityAuthenticationProvider.cs" />
     <Compile Include="SecurityAuthorizationProvider.cs" />
     <Compile Include="SecurityPermissionProvider.cs" />
+    <Compile Include="SecurityUserRoleProvider.cs" />
     <Compile Include="SecurityUserProvider.cs" />
-    <Compile Include="Storage\ISecurityStorageProvider.cs" />
+    <Compile Include="Storage\IUserRoleSecurityStorageProvider.cs" />
+    <Compile Include="Storage\IUserSecurityStorageProvider.cs" />
     <Compile Include="Storage\MongoStorageApplication.cs" />
     <Compile Include="Storage\IStorageApplication.cs" />
-    <Compile Include="Storage\SecurityStorageProvider.cs" />
+    <Compile Include="Storage\UserRoleSecurityStorageProvider.cs" />
+    <Compile Include="Storage\UserSecurityStorageProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Neat.Data.Mongo\Neat.Data.Mongo.csproj">

@@ -9,15 +9,15 @@ namespace Neat.Infrastructure.Security
 {
     public class SecurityUserProvider : ISecurityUserProvider
     {
-        private readonly ISecurityStorageProvider _securityStorageProvider;
+        private readonly IUserSecurityStorageProvider _userSecurityStorageProvider;
         private readonly ISecurityAccessTokenProvider _securityAccessTokenProvider;
         private readonly IHashProvider _hashProvider;
         private readonly ISecurityContext _securityContext;
         private readonly ISessionProvider _sessionProvider;
 
-        public SecurityUserProvider(ISecurityStorageProvider securityStorageProvider, ISecurityAccessTokenProvider securityAccessTokenProvider, IHashProvider hashProvider, ISecurityContext securityContext, ISessionProvider sessionProvider)
+        public SecurityUserProvider(IUserSecurityStorageProvider userSecurityStorageProvider, ISecurityAccessTokenProvider securityAccessTokenProvider, IHashProvider hashProvider, ISecurityContext securityContext, ISessionProvider sessionProvider)
         {
-            _securityStorageProvider = securityStorageProvider;
+            _userSecurityStorageProvider = userSecurityStorageProvider;
             _securityAccessTokenProvider = securityAccessTokenProvider;
             _hashProvider = hashProvider;
             _securityContext = securityContext;
@@ -28,7 +28,7 @@ namespace Neat.Infrastructure.Security
         {
             user.Password = _hashProvider.Hash(user.Password);
             user.Username = user.Username.ToLower();
-            var newUser = _securityStorageProvider.Add(user);
+            var newUser = _userSecurityStorageProvider.Add(user);
             if (!_securityContext.EnableLoginUserOnCreation)
             {
                 return null;
@@ -51,12 +51,12 @@ namespace Neat.Infrastructure.Security
 
         public void UpdateUser(User user)
         {
-            _securityStorageProvider.Update(user);
+            _userSecurityStorageProvider.Update(user);
         }
 
         public User GetUser(string userId)
         {
-            return _securityStorageProvider.GetById(userId);
+            return _userSecurityStorageProvider.GetById(userId);
         }
 
         public User GetCurrentUser()
@@ -67,7 +67,7 @@ namespace Neat.Infrastructure.Security
                 return null;
             }
 
-            return _securityStorageProvider.GetById(session.UserId);
+            return _userSecurityStorageProvider.GetById(session.UserId);
         }
     }
 }

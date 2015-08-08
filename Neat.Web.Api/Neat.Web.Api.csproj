@@ -148,6 +148,7 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\NeatController.cs" />
     <Compile Include="Global.asax.cs">

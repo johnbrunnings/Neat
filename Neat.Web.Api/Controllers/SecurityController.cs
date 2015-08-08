@@ -1,28 +1,25 @@
-﻿using System.Web.Http;
+﻿using System.ComponentModel;
+using System.Web.Http;
 using Neat.Infrastructure.Security;
 using Neat.Infrastructure.Security.Model;
 using Neat.Infrastructure.Security.Model.Request;
 using Neat.Infrastructure.WebApi.Controllers;
+using Neat.Infrastructure.WebApi.Filter;
 
 namespace Neat.Web.Api.Controllers
 {
+    [ApiAuthorizationFilter]
     public class SecurityController : BaseApiController
     {
-        private readonly ISecurityAuthenticationProvider _securityAuthenticationProvider;
         private readonly ISecurityUserProvider _securityUserProvider;
         private readonly ISecurityAuthorizationProvider _securityAuthorizationProvider;
+        private readonly ISecurityUserRoleProvider _securityUserRoleProvider;
 
-        public SecurityController(ISecurityAuthenticationProvider securityAuthenticationProvider, ISecurityUserProvider securityUserProvider, ISecurityAuthorizationProvider securityAuthorizationProvider)
+        public SecurityController(ISecurityUserProvider securityUserProvider, ISecurityAuthorizationProvider securityAuthorizationProvider, ISecurityUserRoleProvider securityUserRoleProvider)
         {
-            _securityAuthenticationProvider = securityAuthenticationProvider;
             _securityUserProvider = securityUserProvider;
             _securityAuthorizationProvider = securityAuthorizationProvider;
-        }
-
-        [HttpPost]
-        public string Authenticate([FromBody] UserAuthenticationRequest userAuthenticationRequest)
-        {
-            return _securityAuthenticationProvider.Authenticate(userAuthenticationRequest);
+            _securityUserRoleProvider = securityUserRoleProvider;
         }
 
         [HttpPost]
@@ -36,15 +33,33 @@ namespace Neat.Web.Api.Controllers
         }
 
         [HttpPost]
-        public void Logout([FromBody] UserAuthenticationAccessTokenRequest userAuthenticationAccessTokenRequest)
-        {
-            _securityAuthenticationProvider.Logout(userAuthenticationAccessTokenRequest.AccessToken);
-        }
-
-        [HttpPost]
         public string CreateUser([FromBody] User user)
         {
             return _securityUserProvider.CreateUser(user);
+        }
+
+        [HttpPost]
+        public void AssignRoleToUser([FromBody] UserRoleRequest userRoleRequest)
+        {
+            _securityUserRoleProvider.CreateUserRole(userRoleRequest.Role);
+        }
+
+        [HttpPost]
+        public void AssignRoleToUserForObject([FromBody] UserRoleForObjectRequest userRoleForObjectRequest)
+        {
+            _securityUserRoleProvider.CreateUserRoleForObject(userRoleForObjectRequest.Role, userRoleForObjectRequest.ObjectType, userRoleForObjectRequest.ObjectId);
+        }
+
+        [HttpDelete]
+        public void DeleteRoleFromUser()
+        {
+            _securityUserRoleProvider.DeleteUserRole();
+        }
+
+        [HttpDelete]
+        public void DeleteRoleFromUserForObject(string objectType, string objectId)
+        {
+            _securityUserRoleProvider.DeleteUserRoleForObject(objectType, objectId);
         }
     }
 }

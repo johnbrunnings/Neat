@@ -3,11 +3,11 @@ using Neat.Infrastructure.Security.Model;
 
 namespace Neat.Infrastructure.Security.Storage
 {
-    public class SecurityStorageProvider : ISecurityStorageProvider
+    public class UserSecurityStorageProvider : IUserSecurityStorageProvider
     {
         private readonly IStorageApplication<User> _userStorageApplication;
 
-        public SecurityStorageProvider(IStorageApplication<User> userStorageApplication)
+        public UserSecurityStorageProvider(IStorageApplication<User> userStorageApplication)
         {
             _userStorageApplication = userStorageApplication;
         }

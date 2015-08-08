@@ -13,13 +13,13 @@ namespace Neat.Infrastructure.Security
     {
         private readonly IEncryptionProvider _encryptionProvider;
         private readonly ISessionProvider _sessionProvider;
-        private readonly ISecurityStorageProvider _securityStorageProvider;
+        private readonly IUserSecurityStorageProvider _userSecurityStorageProvider;
 
-        public SecurityAccessTokenProvider(IEncryptionProvider encryptionProvider, ISessionProvider sessionProvider, ISecurityStorageProvider securityStorageProvider)
+        public SecurityAccessTokenProvider(IEncryptionProvider encryptionProvider, ISessionProvider sessionProvider, IUserSecurityStorageProvider userSecurityStorageProvider)
         {
             _encryptionProvider = encryptionProvider;
             _sessionProvider = sessionProvider;
-            _securityStorageProvider = securityStorageProvider;
+            _userSecurityStorageProvider = userSecurityStorageProvider;
         }
 
         public string CreateAccessToken(string userId, UserAuthenticationRequest userAuthenticationRequest)
@@ -65,7 +65,7 @@ namespace Neat.Infrastructure.Security
             {
                 return null;
             }
-            var user = _securityStorageProvider.GetById(session.UserId);
+            var user = _userSecurityStorageProvider.GetById(session.UserId);
 
             return user;
         }

@@ -8,9 +8,9 @@ namespace Neat.Infrastructure.Security
         public IEnumerable<string> GetActionsForRole(string role)
         {
             var actions = new List<string>();
+            actions.Add("Read");
             if (role == "Admin")
             {
-                actions.Add("Read");
                 actions.Add("Create");
                 actions.Add("Update");
                 actions.Add("Delete");
@@ -23,7 +23,7 @@ namespace Neat.Infrastructure.Security
         {
             var actions = GetActionsForRole(role);
 
-            if (action == "Read") return true;
+            if (action == "Read" && role == "None" && propertyName == "Neat.Model.NeatExample.Name") return false;
 
             return actions.Contains(action);
         }

@@ -35,27 +35,24 @@ namespace Neat.Infrastructure.WebApi.Filter
         {
             var headers = request.Headers;
             var authTokenHeader = headers.GetValues("X-Auth-Token").FirstOrDefault();
-            if (authTokenHeader == null)
+            if (authTokenHeader != null)
             {
-                throw new UnauthorizedAccessException();
-            }
-
-            var authorization = SecurityAuthorizationProvider.GetAuthorizationForAccessToken(authTokenHeader);
-            if (!authorization.IsAuthorized)
-            {
-                throw new UnauthorizedAccessException(authorization.AuthorizationMessage);
+                SecurityAuthorizationProvider.GetAuthorizationForAccessToken(authTokenHeader);
             }
         }
 
         private void SetupAuthTokenHeader(HttpActionExecutedContext actionExecutedContext)
         {
             var response = actionExecutedContext.Response;
-            var user = SecurityUserProvider.GetCurrentUser();
-            if (user != null)
+            if (response != null)
             {
-                var accessToken = SecurityAuthorizationProvider.GetAccessTokenForLoggedInUser(user.Id);
+                var user = SecurityUserProvider.GetCurrentUser();
+                if (user != null)
+                {
+                    var accessToken = SecurityAuthorizationProvider.GetAccessTokenForLoggedInUser(user.Id);
 
-                response.Headers.Add("X-Auth-Token", accessToken);
+                    response.Headers.Add("X-Auth-Token", accessToken);
+                }
             }
         }
     }

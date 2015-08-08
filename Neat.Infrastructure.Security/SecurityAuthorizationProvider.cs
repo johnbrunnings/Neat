@@ -72,7 +72,7 @@ namespace Neat.Infrastructure.Security
 
             if (_securityContext.EnableFieldLevelSecurity)
             {
-                var fieldLevelAuthorizationResponse = ProcessObjectFieldSecurity(securedObject, originalObject, action);
+                var fieldLevelAuthorizationResponse = ProcessObjectFieldSecurity(securedObject, originalObject, action, role);
                 authorizationResponse.SecuredObject = fieldLevelAuthorizationResponse.SecuredObject;
                 authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, fieldLevelAuthorizationResponse.AuthorizationMessage);
             }
@@ -80,7 +80,7 @@ namespace Neat.Infrastructure.Security
             return authorizationResponse;
         }
 
-        private AuthorizationResponse ProcessObjectFieldSecurity(object securedObject, object originalObject, string action, int depth = 0)
+        private AuthorizationResponse ProcessObjectFieldSecurity(object securedObject, object originalObject, string action, string role, int depth = 0)
         {
             var authorizationResponse = new AuthorizationResponse();
             if (securedObject == null)
@@ -120,7 +120,6 @@ namespace Neat.Infrastructure.Security
                     {
                         securedPropertyName = string.Format("{0}.{1}", securedType.FullName, securedPropertyInfo.Name);
                     }
-                    var role = _securityACLProvider.GetCurrentUserRoleForObject(securedObject);
                     
                     if (securedValue != originalValue && !_securityPermissionProvider.CanPerformActionOnProperty(role, action, securedPropertyName))
                     {
@@ -131,7 +130,7 @@ namespace Neat.Infrastructure.Security
                 }
                 if (!(propertyType.IsPrimitive || propertyType.IsValueType || (propertyType == typeof(string))) && depth < _securityContext.FieldLevelSecurityEvaulationDepth)
                 {
-                    var recursiveAuthorizationResponse = ProcessObjectFieldSecurity(securedValue, originalValue, action, depth++);
+                    var recursiveAuthorizationResponse = ProcessObjectFieldSecurity(securedValue, originalValue, action, role, depth++);
                     securedPropertyInfo.SetValue(securedObject, recursiveAuthorizationResponse.SecuredObject);
                     authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, recursiveAuthorizationResponse.AuthorizationMessage);
                 }
