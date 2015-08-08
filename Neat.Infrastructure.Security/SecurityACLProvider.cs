@@ -2,14 +2,35 @@
 {
     public class SecurityACLProvider : ISecurityACLProvider
     {
+        private readonly ISecurityUserProvider _securityUserProvider;
+
+        public SecurityACLProvider(ISecurityUserProvider securityUserProvider)
+        {
+            _securityUserProvider = securityUserProvider;
+        }
+
         public string GetCurrentUserRoleForObject(object securedObject)
         {
-            return "Admin";
+            var user = _securityUserProvider.GetCurrentUser();
+
+            if (user.Username.ToLower() == "admin")
+            {
+                return "Admin";
+            }
+
+            return "None";
         }
 
         public string GetCurrentUserRole()
         {
-            return "Admin";
+            var user = _securityUserProvider.GetCurrentUser();
+
+            if (user.Username.ToLower() == "admin")
+            {
+                return "Admin";
+            }
+
+            return "None";
         }
     }
 }

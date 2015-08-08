@@ -101,6 +101,8 @@
     <Compile Include="Logging\ILogProvider.cs" />
     <Compile Include="Logging\LoggerContextInfo.cs" />
     <Compile Include="Logging\NLogProvider.cs" />
+    <Compile Include="Net\IIPAddressProvider.cs" />
+    <Compile Include="Net\IPAddressProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unity\BypassLoggingInjectionMember.cs" />
     <Compile Include="Unity\Interceptor\ApplicationProcessingInterceptor.cs" />

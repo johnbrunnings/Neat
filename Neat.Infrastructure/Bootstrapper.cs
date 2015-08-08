@@ -4,6 +4,7 @@ using Neat.Infrastructure.ApplicationProcessing;
 using Neat.Infrastructure.Config;
 using Neat.Infrastructure.Encryption;
 using Neat.Infrastructure.Logging;
+using Neat.Infrastructure.Net;
 using Neat.Infrastructure.Unity;
 
 namespace Neat.Infrastructure
@@ -29,6 +30,7 @@ namespace Neat.Infrastructure
             container.RegisterType<IEncryptionProvider, AesEncryptionProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IHashProvider, Sha512HashProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEncryptionContext, EncryptionContext>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IIPAddressProvider, IPAddressProvider>(new ContainerControlledLifetimeManager());
 
             // Bypass normal LoggingContainer registration to prevent Stack Overflow
             container.RegisterTypeDirectlyAgainstContainer(typeof(ILogProvider), typeof(NLogProvider), null, new ContainerControlledLifetimeManager());

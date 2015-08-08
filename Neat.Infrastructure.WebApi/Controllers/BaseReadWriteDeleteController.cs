@@ -2,10 +2,12 @@
 using System.Web.Http;
 using System.Web.Http.OData;
 using MongoRepository;
+using Neat.Infrastructure.WebApi.Filter;
 using Neat.Service;
 
 namespace Neat.Infrastructure.WebApi.Controllers
 {
+    [ApiAuthorizationFilter]
     public abstract class BaseReadWriteDeleteController<T> : BaseApiController where T : class, IEntity<string>, new()
     {
         private readonly IDomainService<T> _domainService;
