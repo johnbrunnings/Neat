@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Neat.Infrastructure.Security;
 using Neat.Infrastructure.Security.Model;
 using Neat.Infrastructure.Security.Model.Request;
