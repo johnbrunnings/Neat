@@ -25,11 +25,12 @@ namespace Neat.Infrastructure.WebApi.Attribute
                 policy.Methods.Add("POST");
                 policy.Methods.Add("PUT");
                 policy.Methods.Add("DELETE");
+                policy.Methods.Add("PATCH");
                 policy.Methods.Add("OPTIONS");
                 policy.Headers.Add("accept");
                 policy.Headers.Add("content-type");
                 policy.Headers.Add("X-Auth-Token");
-                policy.Headers.Add("accept, content-type");
+                policy.Headers.Add("Origin");
                 policy.ExposedHeaders.Add("DataServiceVersion");
                 policy.ExposedHeaders.Add("MaxDataServiceVersion");
                 return policy;

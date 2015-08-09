@@ -30,11 +30,15 @@ namespace Neat.Infrastructure.Security
 
             container.RegisterType<IUserSecurityStorageProvider, UserSecurityStorageProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<IUserRoleSecurityStorageProvider, UserRoleSecurityStorageProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IUserPermissionSecurityStorageProvider, UserPermissionSecurityStorageProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IRoleActionSecurityStorageProvider, RoleActionSecurityStorageProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAccessTokenProvider, SecurityAccessTokenProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAuthorizationProvider, SecurityAuthorizationProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityAuthenticationProvider, SecurityAuthenticationProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityUserProvider, SecurityUserProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityUserRoleProvider, SecurityUserRoleProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecurityUserPermissionProvider, SecurityUserPermissionProvider>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISecurityRoleActionProvider, SecurityRoleActionProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityContext, SecurityContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IApplicationProcessingRule, SecurityApplicationProcessingRule>("SecurityApplicationProcessingRule", new ContainerControlledLifetimeManager());
         }
