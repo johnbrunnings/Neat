@@ -49,6 +49,10 @@ namespace Neat.Infrastructure.Security
                     actions = GetActionsForRole(role).ToList();
                 }
             }
+            else
+            {
+                actions = GetActionsForRole(role).ToList();
+            }
 
             return actions.Contains(action);
         }
