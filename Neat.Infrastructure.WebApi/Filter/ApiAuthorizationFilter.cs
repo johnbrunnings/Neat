@@ -34,10 +34,17 @@ namespace Neat.Infrastructure.WebApi.Filter
         private void VerifyAuthTokenHeader(HttpRequestMessage request)
         {
             var headers = request.Headers;
-            var authTokenHeader = headers.GetValues("X-Auth-Token").FirstOrDefault();
-            if (authTokenHeader != null)
+            try
             {
-                SecurityAuthorizationProvider.GetAuthorizationForAccessToken(authTokenHeader);
+                var authTokenHeader = headers.GetValues("X-Auth-Token").FirstOrDefault();
+                if (authTokenHeader != null)
+                {
+                    SecurityAuthorizationProvider.GetAuthorizationForAccessToken(authTokenHeader);
+                }
+            }
+            catch
+            {
+                // Not Authed, which is fine
             }
         }
 
