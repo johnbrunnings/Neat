@@ -9,6 +9,7 @@ namespace Neat.Model
         {
             Address = new Address();
             Addresses = new List<Address>();
+            //Names = new List<string>();
         }
 
         [SecureWriteProperty]
@@ -18,5 +19,7 @@ namespace Neat.Model
         public Address Address { get; set; }
 
         public List<Address> Addresses { get; set; }
+
+        public List<string> Names { get; set; }
     }
 }

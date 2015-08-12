@@ -9,6 +9,7 @@ using Microsoft.Practices.Unity.InterceptionExtension;
 using MongoRepository;
 using Neat.Data;
 using Neat.Infrastructure.ApplicationProcessing;
+using Neat.Infrastructure.ObjectCreation;
 using Neat.Infrastructure.Security.Attribute;
 using Neat.Infrastructure.Security.Context;
 
@@ -19,12 +20,14 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
         private readonly ISecurityAuthorizationProvider _securityAuthorizationProvider;
         private readonly IGenericRepository _genericRepository;
         private readonly ISecurityContext _securityContext;
+        private readonly IObjectFactory _objectFactory;
 
-        public SecurityApplicationProcessingRule(ISecurityAuthorizationProvider securityAuthorizationProvider, IGenericRepository genericRepository, ISecurityContext securityContext)
+        public SecurityApplicationProcessingRule(ISecurityAuthorizationProvider securityAuthorizationProvider, IGenericRepository genericRepository, ISecurityContext securityContext, IObjectFactory objectFactory)
         {
             _securityAuthorizationProvider = securityAuthorizationProvider;
             _genericRepository = genericRepository;
             _securityContext = securityContext;
+            _objectFactory = objectFactory;
         }
 
         public Type AttributeType
@@ -62,14 +65,14 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                             var buildType = typeof(List<>);
                             outputGenericArgs = outputType.GetGenericArguments();
                             buildType = buildType.MakeGenericType(outputGenericArgs);
-                            var outputGeneric = Activator.CreateInstance(buildType);
+                            var outputGeneric = _objectFactory.Create(buildType);
                             outputList = outputGeneric as IList;
                         }
                         
                         // TODO: Do a bit more work on making this List for other scenarios
                         foreach (var outputItem in outputEnumerable)
                         {
-                            var originalInput = Activator.CreateInstance(outputItem.GetType());
+                            var originalInput = _objectFactory.Create(outputItem.GetType());
                             var response = _securityAuthorizationProvider.CheckObjectAuthorization(outputItem, originalInput, action);
                             if (response.IsAuthorized)
                             {
@@ -88,7 +91,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                     else
                     {
                         var outputType = output.GetType();
-                        var originalInput = Activator.CreateInstance(outputType);
+                        var originalInput = _objectFactory.Create(outputType);
                         var response = _securityAuthorizationProvider.CheckObjectAuthorization(output, originalInput, action);
                         if (!response.IsAuthorized)
                         {
@@ -140,7 +143,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                                     // NOTE: This implementation Makes a Hard Assumption on Mongo
                                     // TODO: Decouple from Mongo
                                     var flaggedInputType = flaggedInput.GetType();
-                                    var originalInput = Activator.CreateInstance(flaggedInputType);
+                                    var originalInput = _objectFactory.Create(flaggedInputType);
                                     if (action == "Update")
                                     {
                                         var flaggedEntity = flaggedInput as IEntity<string>;
