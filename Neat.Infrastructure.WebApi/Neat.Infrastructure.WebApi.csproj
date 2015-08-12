@@ -153,6 +153,10 @@
       <Project>{858463d3-8e17-46ab-8ea3-5ee858fecc84}</Project>
       <Name>Neat.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Neat.Service\Neat.Service.csproj">
+      <Project>{e1cf8c1b-4402-4ce2-9b86-892df7857fe9}</Project>
+      <Name>Neat.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
