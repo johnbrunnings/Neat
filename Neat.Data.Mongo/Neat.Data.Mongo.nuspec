@@ -11,7 +11,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>Neat</tags>
 	<dependencies> 
-		<dependency id="Neat.Data" />
+		<dependency id="Neat.Data" version="$version$"/>
 	</dependencies>
   </metadata>
   
