@@ -49,11 +49,11 @@ public class NeatExample : BaseModel
 
 (There are <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-icon" target="_blank">POSTMAN<a> collections stored in the Neat.Postman directory.)
 
-It's ok we've got nothing there yet...
+It's ok we didn't really send much of an object. It'll build the NeatExample saved to the db based on the default instance of the object.
 
-You should get back a 204 No Content, that's good! The record saved (if it had not, you would have gotten an error).
+You should get back a 204 No Content, that's good! The record saved (this is REST, so the 204 is the success code, but there is no content).
 
-* Go query again:  http://localhost/neat
+* Go query again:  <a href="http://localhost/neat">http://localhost/neat</a>
 ```
 [
   {
@@ -68,5 +68,5 @@ You should get back a 204 No Content, that's good! The record saved (if it had n
 ```
 
 
-* Add a new Model class and Controller class, reference the NeatExample and NeatController. Hit those with similar API calls. 
-Try creating a Customer Model and Controller then hitting http://localhost/customer.
+* Add a new Model class and Controller class, look at the the NeatExample and NeatController for guides. Hit those with similar API calls. 
+Try creating a Customer Model and Controller then hitting <a href="http://localhost/customer">http://localhost/customer</a>.
