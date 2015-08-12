@@ -1,15 +1,17 @@
 # Neat
 
-Badges:
+
 [![Build status](https://ci.appveyor.com/api/projects/status/sd5xwhs08fnj3by0?svg=true)](https://ci.appveyor.com/project/mbonig/neat)
+
+Getting Started
 
 1. Pull this repo
 2. Build in VS2013+ (report any build errors as an Issue)
-3. Host the Neat.Web.Api project
+3. Host the Neat.Web.Api project (IIS)
 4. Create new 'neat' database on your local MongoDB instance
 
 
-test: 
+Test: 
 ```
 http://localhost/neat
 ```
@@ -37,20 +39,21 @@ public class NeatExample : BaseModel
 	public MoreNeatStuff More { get; set; }
 }
 ```
-Use your favorite REST client to POST to /neat:
+
+* Use your favorite REST client to POST to /neat:
 ```
 {
 
 }
 ```
 
-(There are <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-icon" target="_blank">POSTMAN<a> collections stored in the Neat.Test.Postman directory.)
+(There are <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?utm_source=chrome-ntp-icon" target="_blank">POSTMAN<a> collections stored in the Neat.Postman directory.)
 
 It's ok we've got nothing there yet...
 
 You should get back a 204 No Content, that's good! The record saved (if it had not, you would have gotten an error).
 
-Go query again:  http://localhost/neat
+* Go query again:  http://localhost/neat
 ```
 [
   {
