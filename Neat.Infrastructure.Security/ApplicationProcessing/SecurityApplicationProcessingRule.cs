@@ -41,7 +41,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
             var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
             if (action == null)
             {
-                throw new ConfigurationException("No Security Action Specified for Method!");
+                throw new ConfigurationErrorsException("No Security Action Specified for Method!");
             }
             if (_securityContext.EnableObjectLevelSecurity)
             {
@@ -50,7 +50,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                     var parameters = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Parameters").TypedValue.Value as string;
                     if (parameters != null)
                     {
-                        throw new ConfigurationException("Incorrect Parameter Setup, Do Not Specify Parameters on Read Security!");
+                        throw new ConfigurationErrorsException("Incorrect Parameter Setup, Do Not Specify Parameters on Read Security!");
                     }
                     // NOTE: Makes Assumption on Enumerable and Querable Collections only
                     var outputEnumerable = output as IEnumerable;
@@ -111,7 +111,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
             var action = customAttributeNamedArguments.FirstOrDefault(x => x.MemberName == "Action").TypedValue.Value as string;
             if (action == null)
             {
-                throw new ConfigurationException("No Security Action Specified for Method!");
+                throw new ConfigurationErrorsException("No Security Action Specified for Method!");
             }
             if (_securityContext.EnableUserLevelSecurity)
             {
@@ -188,7 +188,7 @@ namespace Neat.Infrastructure.Security.ApplicationProcessing
                         }
                         else
                         {
-                            throw new ConfigurationException(string.Format("Incorrect Parameter Specified {0}, Parameter Does Not Exist!", parameter));
+                            throw new ConfigurationErrorsException(string.Format("Incorrect Parameter Specified {0}, Parameter Does Not Exist!", parameter));
                         }
                     }
                 }
