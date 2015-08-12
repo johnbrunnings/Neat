@@ -1,4 +1,5 @@
-﻿using Neat.Infrastructure.Security.Attribute;
+﻿using System.Collections.Generic;
+using Neat.Infrastructure.Security.Attribute;
 
 namespace Neat.Model
 {
@@ -7,6 +8,8 @@ namespace Neat.Model
         public NeatExample()
         {
             Address = new Address();
+            Addresses = new List<Address>();
+            //Names = new List<string>();
         }
 
         [SecureWriteProperty]
@@ -14,5 +17,9 @@ namespace Neat.Model
         public string Name { get; set; }
 
         public Address Address { get; set; }
+
+        public List<Address> Addresses { get; set; }
+
+        public List<string> Names { get; set; }
     }
 }

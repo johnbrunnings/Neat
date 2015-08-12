@@ -103,6 +103,8 @@
     <Compile Include="Logging\NLogProvider.cs" />
     <Compile Include="Net\IIPAddressProvider.cs" />
     <Compile Include="Net\IPAddressProvider.cs" />
+    <Compile Include="ObjectCreation\IObjectFactory.cs" />
+    <Compile Include="ObjectCreation\ObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unity\BypassLoggingInjectionMember.cs" />
     <Compile Include="Unity\Interceptor\ApplicationProcessingInterceptor.cs" />
