@@ -33,6 +33,7 @@ namespace Neat.Infrastructure.WebApi.Attribute
                 policy.Headers.Add("Origin");
                 policy.ExposedHeaders.Add("DataServiceVersion");
                 policy.ExposedHeaders.Add("MaxDataServiceVersion");
+                policy.ExposedHeaders.Add("X-Auth-Token");
                 return policy;
             }
             // Reject CORS request
