@@ -1,5 +1,8 @@
 # Neat
 
+Badges:
+https://ci.appveyor.com/api/projects/status/sd5xwhs08fnj3by0?svg=true
+
 1. Pull this repo
 2. Build in VS2013+ (report any build errors as an Issue)
 3. Host the Neat.Web.Api project
