@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security;
@@ -99,11 +101,11 @@ namespace Neat.Infrastructure.Security
             for (var i = 0; i < securedProperties.Length; i++)
             {
                 var securedPropertyInfo = securedProperties[i];
-                var propertyType = securedPropertyInfo.PropertyType;
+                var securedPropertyType = securedPropertyInfo.PropertyType;
                 var originalPropertyInfo = originalProperties[i];
                 var securedPropertyInfoCustomAttributes = securedPropertyInfo.CustomAttributes;
-                var securedValue = securedPropertyInfo.GetValue(securedObject, new object[] { });
-                var originalValue = originalPropertyInfo.GetValue(originalObject, new object[] { });
+                var securedValue = securedPropertyInfo.GetValue(securedObject, null);
+                var originalValue = originalPropertyInfo.GetValue(originalObject, null);
                 CustomAttributeData secureAttribute;
                 if (action != "Read")
                 {
@@ -113,6 +115,18 @@ namespace Neat.Infrastructure.Security
                 {
                     secureAttribute = securedPropertyInfoCustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(SecureReadPropertyAttribute));
                 }
+                if (securedPropertyType.FullName != "System.String" && securedPropertyType.GetInterface("IEnumerable") != null)
+                {
+                    var recursiveAuthorizationResponse = ProcessEnumerable(securedPropertyType, securedObject, originalObject, securedPropertyInfo, originalPropertyInfo, action, role, depth);
+                    securedPropertyInfo.SetValue(securedObject, recursiveAuthorizationResponse.SecuredObject);
+                    authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, recursiveAuthorizationResponse.AuthorizationMessage);
+                }
+                if (!(securedPropertyType.IsPrimitive || securedPropertyType.IsValueType || (securedPropertyType == typeof(string)) || securedPropertyType.GetInterface("IEnumerable") != null) && depth < _securityContext.FieldLevelSecurityEvaulationDepth)
+                {
+                    var recursiveAuthorizationResponse = ProcessObjectFieldSecurity(securedValue, originalValue, action, role, depth++);
+                    securedPropertyInfo.SetValue(securedObject, recursiveAuthorizationResponse.SecuredObject);
+                    authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, recursiveAuthorizationResponse.AuthorizationMessage);
+                }
                 if (secureAttribute != null)
                 {
                     var securedPropertyName = secureAttribute.NamedArguments.FirstOrDefault(x => x.MemberName == "PropertyName").TypedValue.Value as string;
@@ -120,19 +134,13 @@ namespace Neat.Infrastructure.Security
                     {
                         securedPropertyName = string.Format("{0}.{1}", securedType.FullName, securedPropertyInfo.Name);
                     }
-                    
+
                     if (securedValue != originalValue && !_securityPermissionProvider.CanPerformActionOnProperty(role, action, securedPropertyName))
                     {
                         authorizationFailureMessages.Add(string.Format("Current User with Role {0} Does Not Have Permission to Perform Action {1} on Property {2}", role, action, securedPropertyName));
                         securedValue = originalValue;
                     }
                     securedPropertyInfo.SetValue(securedObject, securedValue);
-                }
-                if (!(propertyType.IsPrimitive || propertyType.IsValueType || (propertyType == typeof(string))) && depth < _securityContext.FieldLevelSecurityEvaulationDepth)
-                {
-                    var recursiveAuthorizationResponse = ProcessObjectFieldSecurity(securedValue, originalValue, action, role, depth++);
-                    securedPropertyInfo.SetValue(securedObject, recursiveAuthorizationResponse.SecuredObject);
-                    authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, recursiveAuthorizationResponse.AuthorizationMessage);
                 }
             }
 
@@ -144,6 +152,63 @@ namespace Neat.Infrastructure.Security
                 authorizationMessageStringBuilder.Append(" ");
             }
             authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, authorizationMessageStringBuilder);
+
+            return authorizationResponse;
+        }
+
+        private AuthorizationResponse ProcessEnumerable(Type securedPropertyType, object securedObject, object originalObject, PropertyInfo securedPropertyInfo, PropertyInfo originalPropertyInfo, string action, string role, int depth = 0)
+        {
+            var authorizationResponse = new AuthorizationResponse();
+            var securedValue = securedPropertyInfo.GetValue(securedObject, null);
+            var originalValue = originalPropertyInfo.GetValue(originalObject, null);
+            if (securedPropertyType.FullName != "System.String" && securedPropertyType.GetInterface("IEnumerable") != null)
+            {
+                var securedEnumerable = securedValue as IEnumerable;
+                var originalEnumerable = originalValue as IEnumerable;
+                var securedList = new List<object>();
+                var originalList = new List<object>();
+                foreach (var item in securedEnumerable)
+                {
+                    securedList.Add(item);
+                }
+                foreach (var item in originalEnumerable)
+                {
+                    originalList.Add(item);
+                }
+                
+                for (var j = 0; j < securedList.Count; j++)
+                {
+                    var securedCollectionItem = securedList[j];
+                    var securedCollectionItemType = securedCollectionItem.GetType();
+                    object originalCollectionItem = null;
+                    if (originalList.Count > j)
+                    {
+                        originalCollectionItem = originalList[j];
+                    }
+                    else
+                    {
+                        originalCollectionItem = Activator.CreateInstance(securedCollectionItemType);
+                    }
+                    var originalCollectionItemType = originalCollectionItem.GetType();
+                    // TODO: Test List<List<object>>
+                    if (securedCollectionItemType.FullName != "System.String" && securedCollectionItemType.GetInterface("IEnumerable") != null)
+                    {
+                        var securedCollectionItemPropertyInfo = securedCollectionItemType.GetProperty("Item");
+                        var originalCollectionItemPropertyInfo = originalCollectionItemType.GetProperty("Item");
+                        var recursiveAuthorizationResponse = ProcessEnumerable(securedCollectionItemType, securedCollectionItem, originalCollectionItem, securedCollectionItemPropertyInfo, originalCollectionItemPropertyInfo, action, role, depth);
+                        securedList[j] = recursiveAuthorizationResponse.SecuredObject;
+                        authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, recursiveAuthorizationResponse.AuthorizationMessage);
+                    }
+                    if (!(securedCollectionItemType.IsPrimitive || securedCollectionItemType.IsValueType || (securedCollectionItemType == typeof(string))) && depth < _securityContext.FieldLevelSecurityEvaulationDepth)
+                    {
+                        var newDepth = depth + 1;
+                        var recursiveAuthorizationResponse = ProcessObjectFieldSecurity(securedCollectionItem, originalCollectionItem, action, role, newDepth);
+                        securedList[j] = recursiveAuthorizationResponse.SecuredObject;
+                        authorizationResponse.AuthorizationMessage = string.Format("{0} {1}", authorizationResponse.AuthorizationMessage, recursiveAuthorizationResponse.AuthorizationMessage);
+                    }
+                }
+            }
+            authorizationResponse.SecuredObject = securedValue;
 
             return authorizationResponse;
         }
