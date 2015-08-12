@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-     <id>$id$</id>
+    <id>$id$</id>
     <version>$version$</version>
     <title>Neat.Data.Mongo</title>
     <authors>JB</authors>
@@ -10,8 +10,9 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Neat</tags>
+	<dependencies> 
+		<dependency id="Neat.Data" />
+	</dependencies>
   </metadata>
-  <dependencies> 
-    <dependency id="Neat.Data" />
-  </dependencies>
+  
 </package>
