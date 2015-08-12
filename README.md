@@ -1,7 +1,7 @@
 # Neat
 
 Badges:
-https://ci.appveyor.com/api/projects/status/sd5xwhs08fnj3by0?svg=true
+[![Build status](https://ci.appveyor.com/api/projects/status/sd5xwhs08fnj3by0?svg=true)](https://ci.appveyor.com/project/mbonig/neat)
 
 1. Pull this repo
 2. Build in VS2013+ (report any build errors as an Issue)
