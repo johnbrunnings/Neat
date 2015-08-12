@@ -3,10 +3,10 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>Neat.Application</title>
+    <title>Neat.Test.Integration</title>
     <authors>JB</authors>
     <owners>JB</owners>
-    <description>The core Application module for Neat.</description>
+    <description>The integration tests for Neat.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Neat</tags>

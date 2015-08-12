@@ -3,10 +3,10 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>Neat.Application</title>
+    <title>Neat.Infrastructure.Security</title>
     <authors>JB</authors>
     <owners>JB</owners>
-    <description>The core Application module for Neat.</description>
+    <description>The security module for Neat.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Neat</tags>
