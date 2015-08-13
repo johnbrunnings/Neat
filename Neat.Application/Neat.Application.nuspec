@@ -10,5 +10,14 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Neat</tags>
+	<dependencies>
+		<dependency id="Neat.Data" version="$version$"/>
+		<dependency id="Neat.Data.Mongo" version="$version$"/>
+		<dependency id="Neat.Infrastructure" version="$version$"/>
+		<dependency id="Neat.Infrastructure.Session" version="$version$"/>
+		<dependency id="Neat.Infrastructure.Security" version="$version$"/>
+		<dependency id="Neat.Infrastructure.Validation" version="$version$"/>
+		<dependency id="Neat.Model" version="$version$"/>
+	</dependencies>
   </metadata>
 </package>

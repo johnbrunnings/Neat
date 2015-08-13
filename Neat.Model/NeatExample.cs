@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Neat.Infrastructure.Security.Attribute;
 
 namespace Neat.Model
@@ -9,11 +10,12 @@ namespace Neat.Model
         {
             Address = new Address();
             Addresses = new List<Address>();
-            //Names = new List<string>();
+            Names = new List<string>();
         }
 
         [SecureWriteProperty]
         [SecureReadProperty]
+        [MaxLength(20)]
         public string Name { get; set; }
 
         public Address Address { get; set; }

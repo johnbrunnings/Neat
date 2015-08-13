@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Test.Integration", "Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Infrastructure.Session", "Neat.Infrastructure.Session\Neat.Infrastructure.Session.csproj", "{D0F00123-B11A-4018-B5D3-AE74B2AA6B16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat.Infrastructure.Validation", "Neat.Infrastructure.Validation\Neat.Infrastructure.Validation.csproj", "{4871BE91-E200-408E-B821-666A5043A9E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{D0F00123-B11A-4018-B5D3-AE74B2AA6B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0F00123-B11A-4018-B5D3-AE74B2AA6B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0F00123-B11A-4018-B5D3-AE74B2AA6B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4871BE91-E200-408E-B821-666A5043A9E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4871BE91-E200-408E-B821-666A5043A9E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4871BE91-E200-408E-B821-666A5043A9E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4871BE91-E200-408E-B821-666A5043A9E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

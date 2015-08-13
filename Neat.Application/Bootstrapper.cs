@@ -25,6 +25,7 @@ namespace Neat.Application
             Neat.Infrastructure.Bootstrapper.Attach(container);
             Neat.Infrastructure.Session.Bootstrapper.Attach(container);
             Neat.Infrastructure.Security.Bootstrapper.Attach(container);
+            Neat.Infrastructure.Validation.Bootstrapper.Attach(container);
 
             container.RegisterType<ISecurityACLProvider, SecurityACLProvider>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecurityPermissionProvider, SecurityPermissionProvider>(new ContainerControlledLifetimeManager());

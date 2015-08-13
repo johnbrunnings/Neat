@@ -10,5 +10,10 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>Neat</tags>
+	<dependencies>
+		<dependency id="Neat.Infrastructure" version="$version$"/>
+		<dependency id="Neat.Infrastructure.Security" version="$version$"/>
+		<dependency id="Neat.Service" version="$version$"/>
+	</dependencies>
   </metadata>
 </package>
