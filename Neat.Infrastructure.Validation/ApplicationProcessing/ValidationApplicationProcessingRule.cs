@@ -10,7 +10,6 @@ using Neat.Infrastructure.ApplicationProcessing;
 using Neat.Infrastructure.Validation.Attribute;
 using Neat.Infrastructure.Validation.Context;
 using Neat.Infrastructure.Validation.Model.Response;
-using ValidationContext = Neat.Infrastructure.Validation.Context.ValidationContext;
 
 namespace Neat.Infrastructure.Validation.ApplicationProcessing
 {
