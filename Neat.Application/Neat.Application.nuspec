@@ -17,7 +17,6 @@
 		<dependency id="Neat.Infrastructure.Session" version="$version$"/>
 		<dependency id="Neat.Infrastructure.Security" version="$version$"/>
 		<dependency id="Neat.Infrastructure.Validation" version="$version$"/>
-		<dependency id="Neat.Model" version="$version$"/>
 	</dependencies>
   </metadata>
 </package>
