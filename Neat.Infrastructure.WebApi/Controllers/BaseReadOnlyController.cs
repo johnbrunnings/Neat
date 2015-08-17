@@ -20,20 +20,20 @@ namespace Neat.Infrastructure.WebApi.Controllers
         // GET /{T}/getall
         [EnableQuery]
         [HttpGet]
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
             return _domainService.GetAll();
         }
 
         // GET /{T}/{id}
-        public T Get(string id)
+        public virtual T Get(string id)
         {
             return _domainService.GetById(id);
         }
 
         // GET /{T}
         [HttpGet]
-        public T GetEmpty()
+        public virtual T GetEmpty()
         {
             return new T();
         }

@@ -20,38 +20,38 @@ namespace Neat.Infrastructure.WebApi.Controllers
         // GET /{T}/getall
         [EnableQuery]
         [HttpGet]
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
             return _domainService.GetAll();
         }
 
         // GET /{T}/{id}
-        public T Get(string id)
+        public virtual T Get(string id)
         {
             return _domainService.GetById(id);
         }
 
         // POST /{T}
-        public void Post([FromBody]T entity)
+        public virtual T Post([FromBody]T entity)
         {
-            _domainService.Add(entity);
+            return _domainService.Add(entity);
         }
 
         // PUT /{T}
-        public void Put([FromBody]T entity)
+        public virtual void Put([FromBody]T entity)
         {
             _domainService.Update(entity);
         }
 
         // DELETE api/{T}/{id}
-        public void Delete(string id)
+        public virtual void Delete(string id)
         {
             _domainService.Delete(id);
         }
 
         // GET /{T}/{id}
         [HttpGet]
-        public T GetEmpty()
+        public virtual T GetEmpty()
         {
             return new T();
         }
