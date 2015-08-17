@@ -102,10 +102,6 @@
       <Project>{858463d3-8e17-46ab-8ea3-5ee858fecc84}</Project>
       <Name>Neat.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Neat.Model\Neat.Model.csproj">
-      <Project>{bab323bc-6da7-4551-87cb-370f6803988d}</Project>
-      <Name>Neat.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
