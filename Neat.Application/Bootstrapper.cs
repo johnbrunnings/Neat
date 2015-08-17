@@ -21,6 +21,7 @@ namespace Neat.Application
 
         private static void Register(IUnityContainer container)
         {
+            Neat.Data.Bootstrapper.Attach(container);
             Neat.Data.Mongo.Bootstrapper.Attach(container);
             Neat.Infrastructure.Bootstrapper.Attach(container);
             Neat.Infrastructure.Session.Bootstrapper.Attach(container);

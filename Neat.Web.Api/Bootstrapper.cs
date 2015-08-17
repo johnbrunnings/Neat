@@ -15,6 +15,7 @@ namespace Neat.Web.Api
         private static void Register(IUnityContainer container)
         {
             Neat.Infrastructure.WebApi.Bootstrapper.Attach(container);
+            
         }
     }
 }

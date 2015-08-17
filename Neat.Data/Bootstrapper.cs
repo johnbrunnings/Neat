@@ -18,7 +18,7 @@ namespace Neat.Data
 
         private static void Register(IUnityContainer container)
         {
-            
+            container.RegisterType<IConnectionFactory, ConnectionFactory>(new ContainerControlledLifetimeManager());
         }
     }
 }
