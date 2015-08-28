@@ -13,7 +13,7 @@ Getting Started
 
 Test: 
 ```
-http://localhost/neat
+<a href="http://localhost/neat/getall">http://localhost/neat/getall</a>
 ```
 (replace 'localhost' as needed)
 
@@ -53,7 +53,7 @@ It's ok we didn't really send much of an object. It'll build the NeatExample sav
 
 You should get back a 204 No Content, that's good! The record saved (this is REST, so the 204 is the success code, but there is no content).
 
-* Go query again:  <a href="http://localhost/neat">http://localhost/neat</a>
+* Go query again:  <a href="http://localhost/neat">http://localhost/neat/getall</a>
 ```
 [
   {
@@ -69,4 +69,4 @@ You should get back a 204 No Content, that's good! The record saved (this is RES
 
 
 * Add a new Model class and Controller class, look at the the NeatExample and NeatController for guides. Hit those with similar API calls. 
-Try creating a Customer Model and Controller then hitting <a href="http://localhost/customer">http://localhost/customer</a>.
+Try creating a Customer Model and Controller then hitting <a href="http://localhost/customer/getall">http://localhost/customer/getall</a>.
